@@ -18,6 +18,10 @@ use App\Http\Controllers\StudentController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get("details",[ProductController::class,"details"]);
+Route::get("product/{id}",[ProductController::class,"product"]);
+
 Route::resource('products', ProductController::class);
 
 Route::controller(StudentController::class)->group(function(){

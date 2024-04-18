@@ -20,7 +20,8 @@ class StudentController extends Controller
             "dni"=>"required",
             "name"=>"required",
             "lastName"=>"required",
-            "birthDate"=>"required"
+            "birthDate"=>"required",
+            "group"=>"required"
         ]);
         
         $student = new Student();
@@ -29,6 +30,7 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->lastName = $request->lastName;
         $student->birthDate = $request->birthDate;
+        $student->group = $request->group;
 
         $student->save();
 
@@ -43,7 +45,8 @@ class StudentController extends Controller
             "dni"=>"required",
             "name"=>"required",
             "lastName"=>"required",
-            "birthDate"=>"required"
+            "birthDate"=>"required",
+            "group"=>"required"
         ]);
         
         $students = Student::find($student);
@@ -52,6 +55,7 @@ class StudentController extends Controller
         $students->name = $request->name;
         $students->lastName = $request->lastName;
         $students->birthDate = $request->birthDate;
+        $student->group = $request->group;
 
         $students->save();
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +21,10 @@
         <input type="text" name="name" value="{{$student->name}}">
         <input type="text" name="lastName" value="{{$student->lastName}}">
         <input type="date" name="birthDate" value="{{$student->birthDate}}">
+        <select type="text" name="group" value="{{old('group')}}">
+            <option>A</option>
+            <option>B</option>
+        </select>
         <button type="submit">Actualizar</button>
     </form>
 
