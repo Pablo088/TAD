@@ -8,9 +8,20 @@
 </head>
 <body>
     <div>
-        @foreach ($cantidad as $asistencias)
-            <p>{{$asistencias}}</p>
-        @endforeach
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha de Asistencia</th>
+                    </tr>
+                </thead>
+                @foreach ($assist as $asistencia)
+                <tbody>
+                    <tr>
+                        <th>{{$asistencia->created_at}}</th>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
     </div>
 </body>
 </html>

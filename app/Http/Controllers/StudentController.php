@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 
+use App\Models\Assist;
+
 class StudentController extends Controller
 {
     public function index(){
@@ -66,10 +68,18 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route("student.index");
     }
-    public function studentAssists($id){
+    public function addAssist($id){
         $student = Student::find($id);
-        $cantidad = $student->assists();
-        $cantidad->save();
-        return view("ABM.assist",compact("cantidad"));
+
+        $assist = new Assist();
+        $assist->student_id = $student->id;
+
+        $assist->save();
+
+        return redirect()->route("student.index")->withSuccess("La asistencia de $student->name $student->lastName fue agregada");
+    }
+    public function showAssist(){
+        $assist = Assist::All();
+        return view("ABM.assist",compact("assist"));
     }
 }

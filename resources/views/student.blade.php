@@ -20,6 +20,11 @@
     <h1>Hola</h1>
     
        <a href="{{route('student.new')}}"><button>Agregar Alumno</button></a>
+        @if (session('success'))
+            <div class="alert alert-success">
+            {{ session('success') }}
+            </div>
+        @endif
         <div>
             <table>
                 <thead>
@@ -48,7 +53,12 @@
                         </form>
                         </th>
                         <th>
-                            <a href="{{route('student.assists',$students->id)}}"><button>Asistencia</button></a>
+                            <a href="{{route('student.addAssist',$students->id)}}"><button>Asistencia</button></a>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                            <a href="{{route('student.condition',$students->id)}}"><button>Condicion</button></a>
                         </th>
                     </tr>
                 @endforeach

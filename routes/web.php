@@ -37,5 +37,7 @@ Route::controller(StudentController::class)->group(function(){
     
     Route::delete("student/{id}","destroy")->name("student.destroy");
 
-    Route::get("student/{id}/assists","studentAssists")->name("student.assists");
+    Route::get("student/{id}/assists","addAssist")->name("student.addAssist");
+
+    //Route::get("student/{id}/showAssist","showAssist")->name("student.showAssist");
 });
