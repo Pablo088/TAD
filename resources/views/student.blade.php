@@ -47,6 +47,9 @@
                             <button type="submit" id="botonEliminar" onclick="return confirmar()">Eliminar</button>
                         </form>
                         </th>
+                        <th>
+                            <a href="{{route('student.assists',$students->id)}}"><button>Asistencia</button></a>
+                        </th>
                     </tr>
                 @endforeach
                 </tbody>

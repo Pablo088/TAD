@@ -66,4 +66,10 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route("student.index");
     }
+    public function studentAssists($id){
+        $student = Student::find($id);
+        $cantidad = $student->assists();
+        $cantidad->save();
+        return view("ABM.assist",compact("cantidad"));
+    }
 }
