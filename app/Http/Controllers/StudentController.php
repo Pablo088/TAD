@@ -68,8 +68,8 @@ class StudentController extends Controller
     }
     public function studentAssists($id){
         $student = Student::find($id);
-        $cantidad = $student->assists();
-        $cantidad->save();
-        return view("ABM.assist",compact("cantidad"));
+        $student->assists();
+        $student->save();
+        return redirect()->route("student.index");
     }
 }
