@@ -39,5 +39,6 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/{id}/assists","addAssist")->name("student.addAssist");
 
-    //Route::get("student/{id}/showAssist","showAssist")->name("student.showAssist");
+    Route::get("student/{id}/assists/list","assistList")->name("student.assistList");
+
 });

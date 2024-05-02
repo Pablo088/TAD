@@ -56,6 +56,7 @@
                             <a href="{{route('student.addAssist',$students->id)}}"><button>Asistencia</button></a>
                         </th>
                         <th>
+                            <a href="{{route('student.assistList',$students->id)}}"><button>Cantidad de Asistencias</button></a>
                         </th>
                         <th>
                             <a href="{{route('student.condition',$students->id)}}"><button>Condicion</button></a>

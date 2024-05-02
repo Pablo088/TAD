@@ -11,15 +11,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Fecha de Asistencia</th>
+                        <th>Asistencias del Alumno</th>
                     </tr>
                 </thead>
-                @foreach ($assist as $asistencia)
                 <tbody>
+                    @foreach ($student_assist as $assist)
                     <tr>
-                        <th>{{$asistencia->created_at}}</th>
+                        <th>{{$assist->created_at}}</th>
                     </tr>
-                @endforeach
+                    @endforeach
                 </tbody>
             </table>
     </div>
