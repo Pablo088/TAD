@@ -10,9 +10,9 @@ use App\Models\Assist;
 
 class StudentController extends Controller
 {
-    public function index(){
+    public function menu(){
         $student = Student::All();
-        return view("student",compact("student"));
+        return view("studentMenu",compact("student"));
     }
     public function new(){
         return view("ABM.add");
@@ -68,15 +68,25 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route("student.index");
     }
-    public function addAssist($id){
+    public function addAssist(Request $request){
         $assist = new Assist();
-        $student = Student::find($id);
-        $assist->student_id = $student->id;
+        $assist->student_id = $request->id;
         $assist->save();
-        return redirect()->route("student.index");
+        return redirect()->route("student.menu");
     }
     public function assistList($id){
         $student_assist = Assist::select("created_at")->where("student_id",$id)->get();
         return view("ABM.assistList",compact("student_assist"));
+    }
+    public function studentIndex(){
+        return view("studentIndex");
+    }
+    public function findStudent(Request $request){
+        $student = Student::where("dni",$request->dni)->get();
+        if(count($student) !== 0){
+            return view("studentFind",compact("student"));
+        } else{
+            return redirect()->route("student.index")->with(["error"=>"El dni del alumno que ingresaste no existe"]);
+        }
     }
 }

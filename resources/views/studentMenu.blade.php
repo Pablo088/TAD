@@ -18,7 +18,7 @@
 </script>
 <body>
     <h1>Hola</h1>
-    
+        <a href="{{route('student.index')}}"><button>Volver al Indice</button></a> 
        <a href="{{route('student.new')}}"><button>Agregar Alumno</button></a>
         @if (session('success'))
             <div class="alert alert-success">
@@ -51,9 +51,6 @@
                             @method("delete")
                             <button type="submit" id="botonEliminar" onclick="return confirmar()">Eliminar</button>
                         </form>
-                        </th>
-                        <th>
-                            <a href="{{route('student.addAssist',$students->id)}}"><button>Asistencia</button></a>
                         </th>
                         <th>
                             <a href="{{route('student.assistList',$students->id)}}"><button>Cantidad de Asistencias</button></a>

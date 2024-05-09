@@ -38,7 +38,11 @@ Route::get("product/{id}",[ProductController::class,"product"]);
 Route::resource('products', ProductController::class);
 
 Route::controller(StudentController::class)->group(function(){
-    Route::get("student","index")->name("student.index");
+    Route::get("student/index","studentIndex")->name("student.index");
+
+    Route::get("student/find","findStudent")->name("student.find");
+
+    Route::get("student/menu","menu")->name("student.menu");
 
     Route::get("student/new","new")->name("student.new");
     
@@ -50,7 +54,7 @@ Route::controller(StudentController::class)->group(function(){
     
     Route::delete("student/{id}","destroy")->name("student.destroy");
 
-    Route::get("student/{id}/assists","addAssist")->name("student.addAssist");
+    Route::post("student/addAssist","addAssist")->name("student.addAssist");
 
     Route::get("student/{id}/assists/list","assistList")->name("student.assistList");
 
