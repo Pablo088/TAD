@@ -58,4 +58,5 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/{id}/assists/list","assistList")->name("student.assistList");
 
+    Route::get("student/settings","settings")->name("student.settings");
 });

@@ -89,4 +89,7 @@ class StudentController extends Controller
             return redirect()->route("student.index")->with(["error"=>"El dni del alumno que ingresaste no existe"]);
         }
     }
+    public function settings(){
+        return view("settings");
+    }
 }

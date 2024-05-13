@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bienvenido</title>
+    <title>Configuración</title>
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
@@ -15,13 +14,18 @@
             <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
         </div>
     </nav>
-    <h1>Ingresá el DNI para encontrar el alumno</h1>
-    <form action="{{route('student.find')}}" method="get">
-        <input type="number" name="dni" placeholder="DNI Alumno">
-        <button type="submit">Buscar Alumno</button>
+
+    <form action="" method="post">
+        @csrf
+        @method("put")
+        <h3>Dias de Clase</h3>
+        <input type="number" name="dias_clase">
+        <h3>Promedio de Promoción</h3>
+        <input type="number" name="promedio_promocion">
+        <h3>Promedio de Regularidad</h3>
+        <input type="number" name="promedio_regularidad">
+        <h3>Edad Minima (Para entrar a la facultad)</h3>
+        <input type="number" name="edad_minima">
     </form>
-    @if (session("error"))
-        <div>{{session("error")}}</div>
-    @endif
 </body>
 </html>
