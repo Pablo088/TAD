@@ -16,8 +16,6 @@
     </nav>
 
     <form action="" method="post">
-        @csrf
-        @method("put")
         <h3>Dias de Clase</h3>
         <input type="number" name="dias_clase">
         <h3>Promedio de Promoción</h3>

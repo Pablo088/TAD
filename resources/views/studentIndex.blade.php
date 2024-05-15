@@ -23,5 +23,9 @@
     @if (session("error"))
         <div>{{session("error")}}</div>
     @endif
+
+    @if (session("error2"))
+        <div>{{session("error2")}}</div>
+    @endif
 </body>
 </html>

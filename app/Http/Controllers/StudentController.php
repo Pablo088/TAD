@@ -70,9 +70,17 @@ class StudentController extends Controller
     }
     public function addAssist(Request $request){
         $assist = new Assist();
-        $assist->student_id = $request->id;
-        $assist->save();
-        return redirect()->route("student.menu");
+        $dia_actual = date("Y-m-d");
+        $comparacion = Assist::where("student_id",$request->id)->max("created_at");
+        date("Y-m-d",strtotime($comparacion));
+        if($dia_actual !== $comparacion){
+            $assist->student_id = $request->id;
+            $assist->save();
+            return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
+        } else{
+            return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
+        }
+       
     }
     public function assistList($id){
         $student_assist = Assist::select("created_at")->where("student_id",$id)->get();
