@@ -14,8 +14,7 @@ class StudentController extends Controller
         $dia_actual = date("Y-m-d");
         $student = Student::All();
         $cumpleanios = Student::where("birthDate",$dia_actual)->select("name","lastName")->get();
-        $confirmacion = count($cumpleanios);
-        return view("studentMenu",compact("student","cumpleanios","confirmacion"));
+        return view("studentMenu",compact("student","cumpleanios"));
     }
     public function new(){
         return view("ABM.add");
