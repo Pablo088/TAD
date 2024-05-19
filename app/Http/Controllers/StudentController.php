@@ -11,8 +11,11 @@ use App\Models\Assist;
 class StudentController extends Controller
 {
     public function menu(){
+        $dia_actual = date("Y-m-d");
         $student = Student::All();
-        return view("studentMenu",compact("student"));
+        $cumpleanios = Student::where("birthDate",$dia_actual)->select("name","lastName")->get();
+        $confirmacion = count($cumpleanios);
+        return view("studentMenu",compact("student","cumpleanios","confirmacion"));
     }
     public function new(){
         return view("ABM.add");
@@ -57,7 +60,7 @@ class StudentController extends Controller
         $students->name = $request->name;
         $students->lastName = $request->lastName;
         $students->birthDate = $request->birthDate;
-        $student->group = $request->group;
+        $students->group = $request->group;
 
         $students->save();
 
