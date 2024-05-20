@@ -33,6 +33,13 @@
             {{ session('success') }}
             </div>
         @endif
+        @foreach($cumpleanios as $cumple)   
+            @if($cumple)
+                <div>
+                    ¡Muy feliz cumpleaños {{$cumple->name}} {{$cumple->lastName}}!
+                </div>
+            @endif    
+        @endforeach
         <div>
             <table>
                 <thead>
