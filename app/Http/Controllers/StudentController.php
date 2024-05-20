@@ -6,17 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 
+use Illuminate\Support\Str;
+
 use App\Models\Assist;
 
 use Carbon\Carbon;
 
-use Illuminate\Support\Str;
-
 class StudentController extends Controller
 {
     public function menu(){
+        $dia_actual = date("Y-m-d");
         $student = Student::All();
-        return view("studentMenu",compact("student"));
+        $cumpleanios = Student::where("birthDate",$dia_actual)->select("name","lastName")->get();
+        return view("studentMenu",compact("student","cumpleanios"));
     }
     public function new(){
         return view("ABM.add");
@@ -61,7 +63,7 @@ class StudentController extends Controller
         $students->name = $request->name;
         $students->lastName = $request->lastName;
         $students->birthDate = $request->birthDate;
-        $student->group = $request->group;
+        $students->group = $request->group;
 
         $students->save();
 
@@ -78,13 +80,16 @@ class StudentController extends Controller
         $comparacion = Assist::where("student_id",$request->id)->max("created_at");
         $dia_asistencia = Str::substr($comparacion,0,-9);
         if($dia_actual !== $dia_asistencia){
-            $assist->student_id = $request->id;
-            $assist->save();
-            return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
-        } else{
-            return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
-        }
-       
+        $dia_asistencia = Str::substr($comparacion,0,-9);
+
+            if($dia_actual !== $dia_asistencia){
+                $assist->student_id = $request->id;
+                $assist->save();
+                return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
+            } else{
+                return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
+            }
+        }  
     }
     public function assistList($id){
         $student_assist = Assist::select("created_at")->where("student_id",$id)->get();
