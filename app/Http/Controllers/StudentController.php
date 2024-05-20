@@ -8,6 +8,10 @@ use App\Models\Student;
 
 use App\Models\Assist;
 
+use Carbon\Carbon;
+
+use Illuminate\Support\Str;
+
 class StudentController extends Controller
 {
     public function menu(){
@@ -72,7 +76,8 @@ class StudentController extends Controller
         $assist = new Assist();
         $dia_actual = date("Y-m-d");
         $comparacion = Assist::where("student_id",$request->id)->max("created_at");
-        if($dia_actual[9] !== $comparacion[9]){
+        $dia_asistencia = Str::substr($comparacion,0,-9);
+        if($dia_actual !== $dia_asistencia){
             $assist->student_id = $request->id;
             $assist->save();
             return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
