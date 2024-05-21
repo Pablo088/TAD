@@ -15,9 +15,10 @@ use Carbon\Carbon;
 class StudentController extends Controller
 {
     public function menu(){
-        $dia_actual = date("Y-m-d");
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $dia_actual = Carbon::now()->format("m-d");
         $student = Student::All();
-        $cumpleanios = Student::where("birthDate",$dia_actual)->select("name","lastName")->get();
+        $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")->select("name","lastName")->get();
         return view("studentMenu",compact("student","cumpleanios"));
     }
     public function new(){
