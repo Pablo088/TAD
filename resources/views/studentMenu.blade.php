@@ -30,7 +30,7 @@
         <a href="{{route('student.new')}}"><button>Agregar Alumno</button></a>
         @if (session('success'))
             <div class="alert alert-success">
-            {{ session('success') }}
+                {{ session('success') }}
             </div>
         @endif
         @foreach($cumpleanios as $cumple)   

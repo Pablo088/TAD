@@ -15,9 +15,9 @@ use Carbon\Carbon;
 class StudentController extends Controller
 {
     public function menu(){
-        $dia_actual = date("Y-m-d");
+        $dia_actual = date("m-d");
         $student = Student::All();
-        $cumpleanios = Student::where("birthDate",$dia_actual)->select("name","lastName")->get();
+        $cumpleanios = Student::select("name","lastName","birthDate")->get;
         return view("studentMenu",compact("student","cumpleanios"));
     }
     public function new(){
