@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 
+use App\Models\Division;
+
 use Illuminate\Support\Str;
 
 use App\Models\Assist;
@@ -17,9 +19,14 @@ class StudentController extends Controller
     public function menu(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("m-d");
-        $student = Student::All();
+        $student = Student::select("students.id","dni","name","lastName","birthDate","division","group")->join("divisions","divisions.student_idd","=","students.id")->get();
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")->select("name","lastName")->get();
         return view("studentMenu",compact("student","cumpleanios"));
+    }
+    public function filter($anio){
+        switch ($anio){
+            
+        }
     }
     public function new(){
         return view("ABM.add");

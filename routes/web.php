@@ -44,6 +44,8 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/menu","menu")->name("student.menu");
 
+    Route::get("student/filter","filter")->name("student.filter");
+
     Route::get("student/new","new")->name("student.new");
     
     Route::post("student/new/add","add")->name("student.add");

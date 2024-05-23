@@ -12,4 +12,7 @@ class Student extends Model
     public function assists(){
         return $this->hasMany(Assist::class);
     }
+    public function divisions(){
+        return $this->hasOne(Division::class,"student_idd");
+    }
 }

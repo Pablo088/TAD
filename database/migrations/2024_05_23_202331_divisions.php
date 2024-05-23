@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Student;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\ForeignIdColumnDefinition;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assists', function (Blueprint $table) {
+        Schema::create("divisions", function(Blueprint $table){
             $table->id();
-            $table->foreignId('student_id')->constrained(
-                table: "students", indexName: "id"
-            );
+            $table->foreignId('student_idd')->references("id")->on("students");
+            $table->enum("division",[1,2,3,4,5,6]);
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assists');
+        Schema::dropIfExists("divisions");
     }
 };

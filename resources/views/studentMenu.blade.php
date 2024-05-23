@@ -48,6 +48,7 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Fecha de Nacimiento</th>
+                        <th>Año</th>
                         <th>Grupo</th>
                     </tr>
                 </thead>
@@ -58,6 +59,7 @@
                         <th>{{$students->name}}</th>
                         <th>{{$students->lastName}}</th>
                         <th>{{$students->birthDate}}</th>
+                        <th>{{$students->division}}</th>
                         <th>{{$students->group}}</th>
                         <th><a href="{{route('student.edit',$students->id)}}"><button>Modificar</button></a></th>
                         <th>
