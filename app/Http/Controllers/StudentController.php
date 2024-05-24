@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 
-use App\Models\Division;
-
 use Illuminate\Support\Str;
 
 use App\Models\Assist;
