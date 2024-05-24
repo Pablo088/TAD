@@ -1,57 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumnos</title>
+    <title>Filtro</title>
 </head>
-<script>
-            function confirmar(){
-                let respuesta = confirm("¿Queres borrrar este registro?");
-                if(respuesta == true){
-                    return true;
-                } else{
-                    return false;
-                }
-            }
-</script>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand mx-2">TAD</a>
         <div class="me-auto">
             <a href="{{route('student.index')}}"> <button class="btn btn-outline-info">Inicio</button></a>
             <a href="{{route('student.menu')}}"><button class="btn btn-outline-light">Menu</button></a>
             <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
         </div>
-    </nav>
+</nav>
 
-        <a href="{{route('student.new')}}"><button>Agregar Alumno</button></a>
-        <form action="{{route('student.filter')}}" method="get">
-            <select name="filter">
-                <option value="1">Primer Año</option>
-                <option value="2">Segundo Año</option>
-                <option value="3">Tercer Año</option>
-                <option value="4">Cuarto Año</a></option>
-                <option value="5">Quinto Año</option>
-                <option value="6">Sexto Año</option>
-            </select>
-            <button type="submit">Filtrar</button>
-        </form>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @foreach($cumpleanios as $cumple)   
-            @if($cumple)
-                <div>
-                    ¡Muy feliz cumpleaños {{$cumple->name}} {{$cumple->lastName}}!
-                </div>
-            @endif    
-        @endforeach
-        <div>
+<div>
             <table>
                 <thead>
                     <tr>

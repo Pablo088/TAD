@@ -23,10 +23,9 @@ class StudentController extends Controller
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")->select("name","lastName")->get();
         return view("studentMenu",compact("student","cumpleanios"));
     }
-    public function filter($anio){
-        switch ($anio){
-            
-        }
+    public function filter(Request $request){
+        $student = Student::where("division",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
+        return view("studentFilter",compact("student"));
     }
     public function new(){
         return view("ABM.add");
@@ -83,24 +82,22 @@ class StudentController extends Controller
         return redirect()->route("student.index");
     }
     public function addAssist(Request $request){
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
         $assist = new Assist();
-        $dia_actual = date("Y-m-d");
-        $comparacion = Assist::where("student_id",$request->id)->max("created_at");
-        $dia_asistencia = Str::substr($comparacion,0,-9);
-        if($dia_actual !== $dia_asistencia){
+        $dia_actual = Carbon::now()->format("Y-m-d");
+        $comparacion = Assist::where("student_ida",$request->id)->max("created_at");
         $dia_asistencia = Str::substr($comparacion,0,-9);
 
-            if($dia_actual !== $dia_asistencia){
-                $assist->student_id = $request->id;
-                $assist->save();
-                return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
-            } else{
+        if($dia_actual !== $dia_asistencia){
+            $assist->student_ida = $request->id;
+            $assist->save();
+            return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
+        } else{
                 return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
-            }
-        }  
+              } 
     }
     public function assistList($id){
-        $student_assist = Assist::select("created_at")->where("student_id",$id)->get();
+        $student_assist = Assist::select("created_at")->where("student_ida",$id)->get();
         return view("ABM.assistList",compact("student_assist"));
     }
     public function studentIndex(){
