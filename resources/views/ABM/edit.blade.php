@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar Alumno</title>
-</head>
-<body>
+@extends('layouts')
+
+@section('content')
+
     <h1>Aca editas al alumno</h1>
     <div>
         <ul>
@@ -29,5 +25,5 @@
     </form>
 
     <a href="{{route('student.menu')}}"><button>Volver</button></a>
-</body>
-</html>
+
+@endsection    

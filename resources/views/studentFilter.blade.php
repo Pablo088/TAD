@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filtro</title>
-</head>
-<body>
+@extends('layouts')
+
+@section('content')
+
 <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand mx-2">TAD</a>
         <div class="me-auto">
@@ -55,5 +51,5 @@
                 </tbody>
             </table>
         </div>
-</body>
-</html>
+
+@endsection

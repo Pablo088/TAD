@@ -22,6 +22,7 @@ class StudentController extends Controller
         return view("studentMenu",compact("student","cumpleanios"));
     }
     public function filter(Request $request){
+
         $student = Student::where("division",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
         return view("studentFilter",compact("student"));
     }

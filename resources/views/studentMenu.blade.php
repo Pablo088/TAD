@@ -1,22 +1,7 @@
+@extends('layouts')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumnos</title>
-</head>
-<script>
-            function confirmar(){
-                let respuesta = confirm("¿Queres borrrar este registro?");
-                if(respuesta == true){
-                    return true;
-                } else{
-                    return false;
-                }
-            }
-</script>
-<body>
+@section('content')
+
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand mx-2">TAD</a>
         <div class="me-auto">
@@ -27,7 +12,7 @@
     </nav>
 
         <a href="{{route('student.new')}}"><button>Agregar Alumno</button></a>
-        <form action="{{route('student.filter')}}" method="get">
+        <form action="{{route('student.filter')}}" method="get" class="mb-3">
             <select name="filter">
                 <option value="1">Primer Año</option>
                 <option value="2">Segundo Año</option>
@@ -51,8 +36,18 @@
                 </div>
             @endif    
         @endforeach
+        <script>
+            function confirmar(){
+                let respuesta = confirm("¿Queres borrrar este registro?");
+                if(respuesta == true){
+                    return true;
+                } else{
+                    return false;
+                }
+            }
+        </script>
         <div>
-            <table>
+            <table class="table table-primary table-striped table-hover table-borderless mb-5">
                 <thead>
                     <tr>
                         <th>DNI</th>
@@ -65,31 +60,31 @@
                 </thead>
                 <tbody>
                 @foreach($student as $students)
-                    <tr>
+                    <tr class="table-success">
                         <th>{{$students->dni}}</th>
                         <th>{{$students->name}}</th>
                         <th>{{$students->lastName}}</th>
                         <th>{{$students->birthDate}}</th>
                         <th>{{$students->division}}</th>
                         <th>{{$students->group}}</th>
-                        <th><a href="{{route('student.edit',$students->id)}}"><button>Modificar</button></a></th>
+                        <th><a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning">Modificar</button></a></th>
                         <th>
                         <form action="{{route('student.destroy',$students->id)}}" method="post">
                             @csrf  
                             @method("delete")
-                            <button type="submit" id="botonEliminar" onclick="return confirmar()">Eliminar</button>
+                            <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger">Eliminar</button>
                         </form>
                         </th>
                         <th>
-                            <a href="{{route('student.assistList',$students->id)}}"><button>Cantidad de Asistencias</button></a>
+                            <a href="{{route('student.assistList',$students->id)}}"><button class="btn btn-info">Cantidad de Asistencias</button></a>
                         </th>
                         <th>
-                            <a href="{{route('student.condition',$students->id)}}"><button>Condicion</button></a>
+                            <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info">Condicion</button></a>
                         </th>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
-</body>
-</html>
+
+@endsection
