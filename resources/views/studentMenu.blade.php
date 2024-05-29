@@ -2,18 +2,18 @@
 
 @section('content')
 
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-dark mb-3">
         <a class="navbar-brand mx-2">TAD</a>
-        <div class="me-auto">
+        <div class="m">
             <a href="{{route('student.index')}}"> <button class="btn btn-outline-info">Inicio</button></a>
             <a href="{{route('student.menu')}}"><button class="btn btn-outline-light">Menu</button></a>
             <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
         </div>
     </nav>
-
-        <a href="{{route('student.new')}}"><button>Agregar Alumno</button></a>
-        <form action="{{route('student.filter')}}" method="get" class="mb-3">
-            <select name="filter">
+    
+        <a class="d-flex justify-content-center mb-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
+        <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
+            <select name="filter" class="form-control-sm text-center" onchange="enviar(this.options[this.selectedIndex].value)">
                 <option value="1">Primer Año</option>
                 <option value="2">Segundo Año</option>
                 <option value="3">Tercer Año</option>
@@ -21,8 +21,8 @@
                 <option value="5">Quinto Año</option>
                 <option value="6">Sexto Año</option>
             </select>
-            <button type="submit">Filtrar</button>
         </form>
+   
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -47,7 +47,7 @@
             }
         </script>
         <div>
-            <table class="table table-primary table-striped table-hover table-borderless mb-5">
+            <table class="table table-primary table-striped table-hover table-borderless mb-3">
                 <thead>
                     <tr>
                         <th>DNI</th>
@@ -56,6 +56,7 @@
                         <th>Fecha de Nacimiento</th>
                         <th>Año</th>
                         <th>Grupo</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,5 +87,9 @@
                 </tbody>
             </table>
         </div>
-
+        <script>
+            function enviar(eleccion){
+                document.getElementById("form").addEventListenner("submit")
+            }
+        </script>
 @endsection
