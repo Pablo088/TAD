@@ -13,7 +13,7 @@
     
         <a class="d-flex justify-content-center mb-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
         <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
-            <select name="filter" class="form-control-sm text-center" onchange="enviar(this.options[this.selectedIndex].value)">
+            <select name="filter" class="form-control-sm text-center" onchange="enviar()">
                 <option value="1">Primer Año</option>
                 <option value="2">Segundo Año</option>
                 <option value="3">Tercer Año</option>
@@ -89,7 +89,8 @@
         </div>
         <script>
             function enviar(eleccion){
-                document.getElementById("form").addEventListenner("submit")
+                let form = document.getElementById("form");
+                form.submit();
             }
         </script>
 @endsection
