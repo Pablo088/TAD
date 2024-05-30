@@ -8,6 +8,10 @@ use App\Models\Student;
 
 use Illuminate\Support\Str;
 
+use App\Models\Logging;
+
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Assist;
 
 use Carbon\Carbon;
@@ -30,6 +34,13 @@ class StudentController extends Controller
         return view("ABM.add");
     }
     public function add(Request $request){
+        $log = new Logging();
+        $log->user_id = Auth::user()->id;
+        $log->user_nav = $request->header('user-agent');
+        $log->user_ip = $request->ip('user-agent');
+        $log->user_action = "alta";
+        $log->save();
+
         $request->validate([
             "dni"=>"required",
             "name"=>"required",
@@ -55,6 +66,13 @@ class StudentController extends Controller
         return view("ABM.edit", compact("student"));
     }
     public function update(Request $request,$student){
+        $log = new Logging();
+        $log->user_id = Auth::user()->id;
+        $log->user_nav = $request->header('user-agent');
+        $log->user_ip = $request->ip('user-agent');
+        $log->user_action = "modificacion";
+        $log->save();
+
         $request->validate([
             "dni"=>"required",
             "name"=>"required",
@@ -75,7 +93,14 @@ class StudentController extends Controller
 
         return redirect()->route("student.index", $student);
     }
-    public function destroy($id){
+    public function destroy(Request $request,$id){
+        $log = new Logging();
+        $log->user_id = Auth::user()->id;
+        $log->user_nav = $request->header('user-agent');
+        $log->user_ip = $request->ip('user-agent');
+        $log->user_action = "baja";
+        $log->save();
+
         $student = Student::find($id);
         $student->delete();
         return redirect()->route("student.index");

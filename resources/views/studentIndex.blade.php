@@ -10,17 +10,16 @@
             <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
         </div>
     </nav>
-    <h1>Ingresá el DNI para encontrar el alumno</h1>
-    <form action="{{route('student.find')}}" method="get">
-        <input type="number" name="dni" placeholder="DNI Alumno">
-        <button type="submit">Buscar Alumno</button>
+    <h1 class="my-3 text-center">Ingresá el DNI para encontrar el alumno</h1>
+    <form class="d-flex justify-content-center" action="{{route('student.find')}}" method="get">
+        <input class="form-control-lg text-center my-3" type="number" name="dni" placeholder="DNI Alumno">
     </form>
     @if (session("error"))
-        <div>{{session("error")}}</div>
+        <div class="alert alert-error text-center">{{session("error")}}</div>
     @endif
 
     @if (session("error2"))
-        <div>{{session("error2")}}</div>
+        <div class="alert alert-error text-center">{{session("error2")}}</div>
     @endif
     
     @endsection

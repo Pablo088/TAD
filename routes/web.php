@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StudentController;
 
 /*
@@ -30,12 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get("/info",[LoggingController::class,"info"])->middleware("verificar.rol")->name("info");
+
 require __DIR__.'/auth.php';
-
-Route::get("details",[ProductController::class,"details"]);
-Route::get("product/{id}",[ProductController::class,"product"]);
-
-Route::resource('products', ProductController::class);
 
 Route::controller(StudentController::class)->group(function(){
     Route::get("student/index","studentIndex")->name("student.index");

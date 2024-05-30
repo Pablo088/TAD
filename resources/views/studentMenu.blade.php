@@ -2,15 +2,15 @@
 
 @section('content')
 
-    <nav class="navbar navbar-dark bg-dark mb-3">
+    <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand mx-2">TAD</a>
-        <div class="m">
+        <div class="me-auto">
             <a href="{{route('student.index')}}"> <button class="btn btn-outline-info">Inicio</button></a>
             <a href="{{route('student.menu')}}"><button class="btn btn-outline-light">Menu</button></a>
             <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
         </div>
     </nav>
-    
+        <a href="{{route('info')}}"><button>Info Log</button></a>
         <a class="d-flex justify-content-center mb-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
         <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
             <select name="filter" class="form-control-sm text-center" onchange="enviar()">
@@ -25,13 +25,13 @@
    
 
         @if (session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success text-center">
                 {{ session('success') }}
             </div>
         @endif
         @foreach($cumpleanios as $cumple)   
             @if($cumple)
-                <div>
+                <div class="alert alert-success text-center">
                     ¡Muy feliz cumpleaños {{$cumple->name}} {{$cumple->lastName}}!
                 </div>
             @endif    
