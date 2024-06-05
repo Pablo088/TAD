@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create("divisions", function(Blueprint $table){
             $table->id();
-            $table->foreignId('student_idd')->references("id")->on("students");
+            $table->foreignId('student_idd')->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
             $table->enum("division",[1,2,3,4,5,6]);
             $table->timestamps();
         });

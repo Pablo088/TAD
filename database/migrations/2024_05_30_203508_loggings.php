@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create("loggings", function(Blueprint $table){
             $table->id();
-            $table->foreignId("user_id")->references("id")->on("users");
+            $table->foreignId("user_id")->references("id")->on("users")->onDelete("cascade")->onUpdate("cascade");
             $table->string("user_action");
             $table->string("user_ip");
             $table->string("user_nav");
