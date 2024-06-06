@@ -18,7 +18,7 @@ Make sure that you have setup the environment properly. You will need minimum PH
 3. En la consola de comandos de Laragon, dirigite al directorio del proyecto
 4. Introducí el comando "composer install"
 5. Luego tenés que introducir el comando "php artisan key:generate --ansi"
-6. Ahora tenés que correr las migraciones con "php artisan migrate"
+6. Ahora tenés que correr las migraciones con "php artisan migrate --seed"
 7. Ahora introducí el comando "npm install" y despues introducí el comando "npm run dev"
 8. Por último, inicia el proyecto con el comando "php artisan serve"
 9. Ingresá a http://127.0.0.1:8000 para empezar a probar la aplicación (▬_▬)
