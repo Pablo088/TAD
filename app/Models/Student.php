@@ -10,7 +10,7 @@ class Student extends Model
     use HasFactory;
 
     public function assists(){
-        return $this->hasMany(Assist::class);
+        return $this->hasMany(Assist::class,"student_ida");
     }
     public function divisions(){
         return $this->hasOne(Division::class,"student_idd");

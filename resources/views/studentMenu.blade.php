@@ -10,8 +10,10 @@
             <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
         </div>
     </nav>
-        <a href="{{route('info')}}"><button>Info Log</button></a>
-        <a class="d-flex justify-content-center mb-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
+
+        <a class="d-flex justify-content-center my-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
+        <a class="d-flex justify-content-center my-3" href="{{route('list.pdf')}}"><button class="btn btn-primary">pdf</button></a>
+
         <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
             <select name="filter" class="form-control-sm text-center" onchange="enviar()">
                 <option value="1">Primer Año</option>

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     public function studentCondition($id){
-        $assist = Assist::where("student_id",$id)->count();
+        $assist = Assist::where("student_ida",$id)->count();
         $cantidadClases = 10;
         $condicion = ($assist / $cantidadClases)*100;
 

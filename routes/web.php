@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoggingController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
@@ -31,6 +32,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get("/info",[LoggingController::class,"info"])->middleware("verificar.rol")->name("info");
+
+Route::get("list/pdf",[PdfController::class,"pdf"])->name("list.pdf");
 
 require __DIR__.'/auth.php';
 

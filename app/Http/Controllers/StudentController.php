@@ -35,11 +35,15 @@ class StudentController extends Controller
     }
     public function add(Request $request){
         $log = new Logging();
-        $log->user_id = Auth::user()->id;
-        $log->user_nav = $request->header('user-agent');
-        $log->user_ip = $request->ip('user-agent');
-        $log->user_action = "alta";
-        $log->save();
+        $idUsuario =  Auth::user()->id;
+
+        if($idUsuario !== null){
+            $log->user_id = Auth::user()->id;
+            $log->user_nav = $request->header('user-agent');
+            $log->user_ip = $request->ip('user-agent');
+            $log->user_action = "alta";
+            $log->save();
+        }
 
         $request->validate([
             "dni"=>"required",
@@ -67,11 +71,15 @@ class StudentController extends Controller
     }
     public function update(Request $request,$student){
         $log = new Logging();
-        $log->user_id = Auth::user()->id;
-        $log->user_nav = $request->header('user-agent');
-        $log->user_ip = $request->ip('user-agent');
-        $log->user_action = "modificacion";
-        $log->save();
+        $idUsuario =  Auth::user()->id;
+
+        if($idUsuario !== null){
+            $log->user_id = Auth::user()->id;
+            $log->user_nav = $request->header('user-agent');
+            $log->user_ip = $request->ip('user-agent');
+            $log->user_action = "modificacion";
+            $log->save();
+        }
 
         $request->validate([
             "dni"=>"required",
@@ -91,19 +99,23 @@ class StudentController extends Controller
 
         $students->save();
 
-        return redirect()->route("student.index", $student);
+        return redirect()->route("student.menu", $student);
     }
     public function destroy(Request $request,$id){
         $log = new Logging();
-        $log->user_id = Auth::user()->id;
-        $log->user_nav = $request->header('user-agent');
-        $log->user_ip = $request->ip('user-agent');
-        $log->user_action = "baja";
-        $log->save();
+        $idUsuario =  Auth::user()->id;
+
+        if($idUsuario !== null){
+            $log->user_id = Auth::user()->id;
+            $log->user_nav = $request->header('user-agent');
+            $log->user_ip = $request->ip('user-agent');
+            $log->user_action = "baja";
+            $log->save();
+        } 
 
         $student = Student::find($id);
         $student->delete();
-        return redirect()->route("student.index");
+        return redirect()->route("student.menu");
     }
     public function addAssist(Request $request){
         date_default_timezone_set("America/Argentina/Buenos_Aires");

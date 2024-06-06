@@ -1,3 +1,4 @@
+///////////////Cosas del proyecto original
 # Simple Laravel 10 CRUD Application Tutorial
 Learn how to develop a simple Laravel 10 CRUD application
 
@@ -9,12 +10,15 @@ https://www.allphptricks.com/
 
 ## Installation 
 Make sure that you have setup the environment properly. You will need minimum PHP 8.1, MySQL/MariaDB, and composer.
+///////////////////////
+## Guia de instalación para este fork
 
-1. Download the project (or clone using GIT)
-2. Copy `.env.example` into `.env` and configure your database credentials
-3. Go to the project's root directory using terminal window/command prompt
-4. Run `composer install`
-5. Set the application key by running `php artisan key:generate --ansi`
-6. Run migrations `php artisan migrate`
-7. Start local server by executing `php artisan serve`
-8. Visit here [http://127.0.0.1:8000/products](http://127.0.0.1:8000/products) to test the application
+1. Podes descargar el proyecto tocando el boton "code" y luego presionando "download", o podes hacer un git clone (en la consola de comandos introducís: git clone https://github.com/Pablo088/laravel-10-crud.git)
+2. Copia el archivo ".env.example". Ahora vas a tener que renombrar esa copia de ".env.example" como ".env"
+3. En la consola de comandos de Laragon, dirigite al directorio del proyecto
+4. Introducí el comando "composer install"
+5. Luego tenés que introducir el comando "php artisan key:generate --ansi"
+6. Ahora tenés que correr las migraciones con "php artisan migrate"
+7. Ahora introducí el comando "npm install" y despues introducí el comando "npm run dev"
+8. Por último, inicia el proyecto con el comando "php artisan serve"
+9. Ingresá a http://127.0.0.1:8000 para empezar a probar la aplicación (▬_▬)
