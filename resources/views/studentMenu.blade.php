@@ -16,6 +16,7 @@
 
         <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
             <select name="filter" class="form-control-sm text-center" onchange="enviar()">
+                <option value="">Filtro</option>
                 <option value="1">Primer Año</option>
                 <option value="2">Segundo Año</option>
                 <option value="3">Tercer Año</option>

@@ -11,6 +11,18 @@
         </div>
 </nav>
 
+    <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
+            <select name="filter" class="form-control-sm text-center" onchange="enviar()">
+                <option value="">Filtro</option>
+                <option value="1">Primer Año</option>
+                <option value="2">Segundo Año</option>
+                <option value="3">Tercer Año</option>
+                <option value="4">Cuarto Año</a></option>
+                <option value="5">Quinto Año</option>
+                <option value="6">Sexto Año</option>
+            </select>
+    </form>
+
 <div>
             <table class="table table-primary table-striped table-hover table-borderless mb-3">
                 <thead>
@@ -51,5 +63,10 @@
                 </tbody>
             </table>
         </div>
-
+        <script>
+            function enviar(eleccion){
+                let form = document.getElementById("form");
+                form.submit();
+            }
+        </script>
 @endsection
