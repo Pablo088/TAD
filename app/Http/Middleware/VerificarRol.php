@@ -17,10 +17,10 @@ class VerificarRol
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user()->id;
-        $userId = User::find($user);
-        if($userId->rol == "admin"){
-            return "hola";
+        $userId = Auth::user()->id;
+        $user = User::find($userId);
+        if($user->rol == "admin"){
+            return $next($request);
         } else{
             return redirect()->route("student.menu");
         }

@@ -15,4 +15,7 @@ class Student extends Model
     public function divisions(){
         return $this->hasOne(Division::class,"student_idd");
     }
+    public function notas(){
+        return $this->hasOne(Nota::class,"student_idn");
+    }
 }

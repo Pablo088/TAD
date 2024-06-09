@@ -33,8 +33,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get("/info",[LoggingController::class,"info"])->middleware("verificar.rol")->name("info");
 
-Route::get("list/pdf",[PdfController::class,"pdf"])->name("list.pdf");
-
 require __DIR__.'/auth.php';
 
 Route::controller(StudentController::class)->group(function(){
@@ -61,4 +59,14 @@ Route::controller(StudentController::class)->group(function(){
     Route::get("student/{id}/assists/list","assistList")->name("student.assistList");
 
     Route::get("student/settings","settings")->name("student.settings");
+
+    Route::get("student/{id}/nota","notas")->name("student.notas")->middleware("verificar.rol");
+
+    Route::post("student/notas","subirNotas")->name("subirNotas");
+});
+
+Route::controller(PdfController::class)->group(function(){
+    Route::get("pdf/list","pdf")->name("list.pdf");
+
+    Route::get("pdf/report/filter","reportFilter")->name("report.pdf");
 });

@@ -18,7 +18,7 @@ class DivisionFactory extends Factory
     {
         return [
             "student_idd" => fake()->unique()->numberBetween($min=1,$max=20),
-            "division"=>fake()->numberBetween($min=1,$max=6)
+            "year"=>fake()->numberBetween($min=1,$max=6)
         ];
     }
 }

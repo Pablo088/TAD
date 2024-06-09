@@ -13,6 +13,7 @@
 
         <a class="d-flex justify-content-center my-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
         <a class="d-flex justify-content-center my-3" href="{{route('list.pdf')}}"><button class="btn btn-primary">pdf</button></a>
+        <a class="d-flex justify-content-center my-3" href="{{route('report.pdf')}}"><button class="btn btn-primary">Reporte</button></a>
 
         <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
             <select name="filter" class="form-control-sm text-center" onchange="enviar()">
@@ -84,6 +85,9 @@
                         </th>
                         <th>
                             <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info">Condicion</button></a>
+                        </th>
+                        <th>
+                            <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning">Agregar Nota</button></a>
                         </th>
                     </tr>
                 @endforeach

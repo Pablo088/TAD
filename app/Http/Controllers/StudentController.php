@@ -14,20 +14,26 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Assist;
 
+use App\Models\Condition;
+
+use App\Models\Nota;
+
 use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Db;
 
 class StudentController extends Controller
 {
     public function menu(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("m-d");
-        $student = Student::select("students.id","dni","name","lastName","birthDate","division","group")->join("divisions","divisions.student_idd","=","students.id")->get();
+        $student = Student::select("students.id","dni","name","lastName","birthDate","year","division")->join("divisions","divisions.student_idd","=","students.id")->get();
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")->select("name","lastName")->get();
         return view("studentMenu",compact("student","cumpleanios"));
     }
     public function filter(Request $request){
 
-        $student = Student::where("division",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
+        $student = Student::where("year",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
         return view("studentFilter",compact("student"));
     }
     public function new(){
@@ -59,7 +65,7 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->lastName = $request->lastName;
         $student->birthDate = $request->birthDate;
-        $student->group = $request->group;
+        $student->division = $request->group;
 
         $student->save();
 
@@ -95,7 +101,7 @@ class StudentController extends Controller
         $students->name = $request->name;
         $students->lastName = $request->lastName;
         $students->birthDate = $request->birthDate;
-        $students->group = $request->group;
+        $students->division = $request->group;
 
         $students->save();
 
@@ -150,4 +156,26 @@ class StudentController extends Controller
     public function settings(){
         return view("settings");
     }
+    public function notas($id){
+        return view("notas",compact("id"));
+    }
+    public function subirNotas(Request $request){
+        $notas = new Nota();
+
+        $request->validate([
+            "id"=>"required",
+            "nota1"=>"required",
+            "nota2"=>"required",
+            "nota3"=>"required"
+        ]);
+
+        $notas->student_idn = $request->id;
+        $notas->nota1 = $request->nota1;
+        $notas->nota2 = $request->nota2;
+        $notas->nota3 = $request->nota3;
+        $notas->prom = ($request->nota1+$request->nota2+$request->nota3)/3;
+        $notas->save(); 
+
+        return redirect()->route("student.menu");
+    }                                
 }

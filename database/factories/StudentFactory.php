@@ -21,7 +21,7 @@ class StudentFactory extends Factory
             "name"=>fake()->firstName(),
             "lastName"=>fake()->lastName(),
             "birthDate"=>fake()->date(),
-            "group"=>fake()->randomElement(["A","B"]),
+            "division"=>fake()->randomElement(["A","B"]),
         ];
     }
 }

@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("divisions", function(Blueprint $table){
+        Schema::create("notas", function(Blueprint $table){
             $table->id();
-            $table->foreignId('student_idd')->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
-            $table->enum("year",[1,2,3,4,5,6]);
+            $table->foreignId("student_idn")->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
+            $table->integer("nota1");
+            $table->integer("nota2");
+            $table->integer("nota3");
+            $table->integer("prom");
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("divisions");
+        Schema::dropIfExists("notas");
     }
 };
