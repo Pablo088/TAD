@@ -5,6 +5,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,3 +71,6 @@ Route::controller(PdfController::class)->group(function(){
 
     Route::get("pdf/report/filter","reportFilter")->name("report.pdf");
 });
+
+Route::get("user/filter",[UserController::class,"filter"])->name("user.filter");
+Route::get("user/",[UserController::class,"algo"])->name("user.algo");
