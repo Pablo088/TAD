@@ -247,7 +247,7 @@ class StudentController extends Controller
 
         $diasClases = Setting::select("dias_clases")->first();
 
-        $assistPercentage = ($studentAssist * 100) / $diasClases->dias_clases;
+        $assistPercentage = round(($studentAssist * 100) / $diasClases->dias_clases);
        
         return view("studentCondition",compact("assistPercentage"));
     }            

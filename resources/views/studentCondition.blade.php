@@ -15,15 +15,13 @@
 
     @switch($assistPercentage)
         @case ($assistPercentage < 60)
-            <div class="alert alert-danger">Libre ({{$assistPercentage}}%)</div>
+            <div class="alert alert-danger text-center">Libre ({{$assistPercentage}}%)</div>
             @break
         @case($assistPercentage >=60 && $assistPercentage < 80)
-            <div class="alert alert-warning">Regular ({{$assistPercentage}}%)</div>
+            <div class="alert alert-warning text-center">Regular ({{$assistPercentage}}%)</div>
             @break
         @case($assistPercentage >=80)
-            <div class="alert alert success">Promocionado ({{$assistPercentage}}%)</div>
+            <div class="alert alert-success text-center">Promocionado ({{$assistPercentage}}%)</div>
             @break
-        @default
-            <div class="alert alert-danger">Este alumno no cuenta con asistencias</div>
     @endswitch
 @endsection

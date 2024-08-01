@@ -56,6 +56,9 @@
                         <th>
                             <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info">Condicion</button></a>
                         </th>
+                        <th>
+                            <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning">Agregar Nota</button></a>
+                        </th>
                     </tr>
                 @endforeach
                 </tbody>
