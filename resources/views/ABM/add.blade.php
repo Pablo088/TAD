@@ -15,7 +15,15 @@
         <input type="text" name="name" placeholder="Nombre" value="{{old('name')}}">
         <input type="text" name="lastName" placeholder="Apellido" value="{{old('lastName')}}">
         <input type="date" name="birthDate" value="{{old('birthDate')}}">
-        <select type="text" name="group" value="{{old('group')}}">
+        <select type="number" name="year" value="{{old('year')}}">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+        </select>
+        <select type="text" name="division" value="{{old('division')}}">
             <option>A</option>
             <option>B</option>
         </select>

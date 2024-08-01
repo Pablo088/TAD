@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create("settings",function(Blueprint $table){
+            $table->id();
             $table->integer("dias_clases");
             $table->integer("promedio_promocion");
             $table->integer("promedio_regularidad");
             $table->integer("edad_minima");
+            $table->timestamps();
         });
     }
 

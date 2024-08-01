@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("name");
             $table->string("lastName");
             $table->date("birthDate");
+            $table->enum("year",[1,2,3,4,5,6]);
             $table->enum("division",["A","B"]);
             $table->timestamps();
         });

@@ -14,31 +14,34 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Assist;
 
-use App\Models\Condition;
-
 use App\Models\Nota;
 
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Db;
 
+use App\Models\Setting;
+
 class StudentController extends Controller
 {
     public function menu(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("m-d");
-        $student = Student::select("students.id","dni","name","lastName","birthDate","year","division")->join("divisions","divisions.student_idd","=","students.id")->get();
+        $student = Student::select("students.id","dni","name","lastName","birthDate","students.year","division")->join("divisions","divisions.student_idd","=","students.id")->get();
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")->select("name","lastName")->get();
         return view("studentMenu",compact("student","cumpleanios"));
     }
+
     public function filter(Request $request){
 
-        $student = Student::where("year",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
+        $student = Student::where("students.year",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
         return view("studentFilter",compact("student"));
     }
+
     public function new(){
         return view("ABM.add");
     }
+
     public function add(Request $request){
         $log = new Logging();
         $idUsuario =  Auth::user()->id;
@@ -56,7 +59,8 @@ class StudentController extends Controller
             "name"=>"required",
             "lastName"=>"required",
             "birthDate"=>"required",
-            "group"=>"required"
+            "year"=>"required",
+            "division"=>"required"
         ]);
         
         $student = new Student();
@@ -65,16 +69,19 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->lastName = $request->lastName;
         $student->birthDate = $request->birthDate;
-        $student->division = $request->group;
+        $student->year = $request->year;
+        $student->division = $request->division;
 
         $student->save();
 
         return redirect()->route("student.new");
     }
+
     public function edit($id){
         $student = Student::find($id);
         return view("ABM.edit", compact("student"));
     }
+    
     public function update(Request $request,$student){
         $log = new Logging();
         $idUsuario =  Auth::user()->id;
@@ -92,7 +99,8 @@ class StudentController extends Controller
             "name"=>"required",
             "lastName"=>"required",
             "birthDate"=>"required",
-            "group"=>"required"
+            "year"=>"required",
+            "division"=>"required"
         ]);
         
         $students = Student::find($student);
@@ -101,12 +109,14 @@ class StudentController extends Controller
         $students->name = $request->name;
         $students->lastName = $request->lastName;
         $students->birthDate = $request->birthDate;
-        $students->division = $request->group;
+        $student->year = $request->year;
+        $students->division = $request->division;
 
         $students->save();
 
         return redirect()->route("student.menu", $student);
     }
+
     public function destroy(Request $request,$id){
         $log = new Logging();
         $idUsuario =  Auth::user()->id;
@@ -123,6 +133,7 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route("student.menu");
     }
+    
     public function addAssist(Request $request){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $assist = new Assist();
@@ -138,13 +149,16 @@ class StudentController extends Controller
                 return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
               } 
     }
+    
     public function assistList($id){
         $student_assist = Assist::select("created_at")->where("student_ida",$id)->get();
         return view("ABM.assistList",compact("student_assist"));
     }
+
     public function studentIndex(){
         return view("studentIndex");
     }
+
     public function findStudent(Request $request){
         $student = Student::where("dni",$request->dni)->get();
         if(count($student) !== 0){
@@ -153,12 +167,15 @@ class StudentController extends Controller
             return redirect()->route("student.index")->with(["error"=>"El dni del alumno que ingresaste no existe"]);
         }
     }
+
     public function settings(){
         return view("settings");
     }
+
     public function notas($id){
         return view("notas",compact("id"));
     }
+
     public function subirNotas(Request $request){
         $notas = new Nota();
 
@@ -177,5 +194,61 @@ class StudentController extends Controller
         $notas->save(); 
 
         return redirect()->route("student.menu");
-    }                                
+    }        
+
+    public function setting(){
+        return view("settings");
+    }      
+
+    public function addSettings(Setting $setting,Request $request){
+        
+            $settings = Setting::first();
+
+            if($settings == null){
+                $settings = new Setting();
+
+                $request -> validate([
+                    "dias_clases" => "required",
+                    "promedio_promocion" => "required",
+                    "promedio_regularidad" => "required",
+                    "edad_minima" => "required"
+                ]);
+        
+                $settings->dias_clases = $request->dias_clases;
+                $settings->promedio_promocion = $request->promedio_promocion;
+                $settings->promedio_regularidad = $request->promedio_regularidad;
+                $settings->edad_minima = $request->edad_minima;
+        
+                $settings->save();
+        
+                return redirect()->route("student.settings")->with(["success"=>"¡Se cargó la configuración!"]);
+            }else if($settings !== null){
+
+                $request -> validate([
+                    "dias_clases" => "required",
+                    "promedio_promocion" => "required",
+                    "promedio_regularidad" => "required",
+                    "edad_minima" => "required"
+                ]);
+                
+                $settings->dias_clases = $request->dias_clases;
+                $settings->promedio_promocion = $request->promedio_promocion;
+                $settings->promedio_regularidad = $request->promedio_regularidad;
+                $settings->edad_minima = $request->edad_minima;
+        
+                $settings->save();
+        
+                return redirect()->route("student.settings")->with(["success"=>"¡Se actualizó la configuración!"]);
+            }
+    }      
+
+    public function condition($id){
+        $studentAssist = Assist::where("student_ida",$id)->count();
+
+        $diasClases = Setting::select("dias_clases")->first();
+
+        $assistPercentage = ($studentAssist * 100) / $diasClases->dias_clases;
+       
+        return view("studentCondition",compact("assistPercentage"));
+    }            
 }

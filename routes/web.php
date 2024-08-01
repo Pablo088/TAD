@@ -59,11 +59,15 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/{id}/assists/list","assistList")->name("student.assistList");
 
-    Route::get("student/settings","settings")->name("student.settings");
+    Route::get("student/{id}/nota","notas")->name("student.notas");//->middleware("verificar.rol")
+    
+    Route::get("student/settings","setting")->name("student.settings");
 
-    Route::get("student/{id}/nota","notas")->name("student.notas")->middleware("verificar.rol");
+    Route::put("student/settings/add","addSettings")->name("student.addSettings");
 
     Route::post("student/notas","subirNotas")->name("subirNotas");
+
+    Route::get("student/{id}/condition","condition")->name("student.condition");
 });
 
 Route::controller(PdfController::class)->group(function(){
@@ -71,6 +75,3 @@ Route::controller(PdfController::class)->group(function(){
 
     Route::get("pdf/report/filter","reportFilter")->name("report.pdf");
 });
-
-Route::get("user/filter",[UserController::class,"filter"])->name("user.filter");
-Route::get("user/",[UserController::class,"algo"])->name("user.algo");

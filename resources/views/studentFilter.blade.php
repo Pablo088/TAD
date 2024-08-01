@@ -31,8 +31,7 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Fecha de Nacimiento</th>
-                        <th>Año</th>
-                        <th>Grupo</th>
+                        <th>Division</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,7 +42,6 @@
                         <th>{{$students->lastName}}</th>
                         <th>{{$students->birthDate}}</th>
                         <th>{{$students->division}}</th>
-                        <th>{{$students->group}}</th>
                         <th><a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning">Modificar</button></a></th>
                         <th>
                         <form action="{{route('student.destroy',$students->id)}}" method="post">
@@ -64,7 +62,7 @@
             </table>
         </div>
         <script>
-            function enviar(eleccion){
+            function enviar(){
                 let form = document.getElementById("form");
                 form.submit();
             }

@@ -28,6 +28,7 @@ class PdfController extends Controller
                         ->get();
 
         $pdf = Pdf::loadView('report', compact("student"));
+        
         return $pdf->stream('report.pdf');
     }
 }

@@ -21,8 +21,8 @@
                         <th>{{$students->name}}</th>
                         <th>{{$students->lastName}}</th>
                         <th>{{$students->birthDate}}</th>
+                        <th>{{$students->year}}</th>
                         <th>{{$students->division}}</th>
-                        <th>{{$students->group}}</th>
                     </tr>
                 @endforeach
                 </tbody>
