@@ -1,16 +1,11 @@
 @extends('layouts')
 
+@section("header")
+    @vite("resources/css/student/student-menu.css")
+@stop
+
 @section('content')
-
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand mx-2">TAD</a>
-        <div class="me-auto">
-            <a href="{{route('student.index')}}"> <button class="btn btn-outline-info">Inicio</button></a>
-            <a href="{{route('student.menu')}}"><button class="btn btn-outline-light">Menu</button></a>
-            <a href="{{route('student.settings')}}"><button class="btn btn-outline-info">Configuración</button></a>
-        </div>
-    </nav>
-
+    <div id="main-content">
         <a class="d-flex justify-content-center my-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
         <a class="d-flex justify-content-center my-3" href="{{route('list.pdf')}}"><button class="btn btn-primary">pdf</button></a>
         <a class="d-flex justify-content-center my-3" href="{{route('report.pdf')}}"><button class="btn btn-primary">Reporte</button></a>
@@ -72,22 +67,21 @@
                         <th>{{$students->birthDate}}</th>
                         <th>{{$students->year}}</th>
                         <th>{{$students->division}}</th>
-                        <th><a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning">Modificar</button></a></th>
-                        <th>
-                        <form action="{{route('student.destroy',$students->id)}}" method="post">
-                            @csrf  
-                            @method("delete")
-                            <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger">Eliminar</button>
-                        </form>
-                        </th>
-                        <th>
+                        <th style="padding: 5px;">
+                            <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning">Modificar</button></a>
+
+                            
                             <a href="{{route('student.assistList',$students->id)}}"><button class="btn btn-info">Cantidad de Asistencias</button></a>
-                        </th>
-                        <th>
+                            
                             <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info">Condicion</button></a>
-                        </th>
-                        <th>
+                            
                             <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning">Agregar Nota</button></a>
+                            
+                            <form action="{{route('student.destroy',$students->id)}}" method="post">
+                                @csrf  
+                                @method("delete")
+                                <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger">Eliminar</button>
+                            </form>
                         </th>
                     </tr>
                 @endforeach
@@ -100,4 +94,5 @@
                 form.submit();
             }
         </script>
+    </div>
 @endsection

@@ -2,10 +2,8 @@
 
 use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\PdfController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,26 +16,15 @@ use App\Http\Controllers\UserController;
 |
 */
 
+/*
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+});*/
 
 Route::get("/info",[LoggingController::class,"info"])->middleware("verificar.rol")->name("info");
 
-require __DIR__.'/auth.php';
-
 Route::controller(StudentController::class)->group(function(){
-    Route::get("student/index","studentIndex")->name("student.index");
+    Route::get("/","studentIndex")->name("student.index");
 
     Route::get("student/find","findStudent")->name("student.find");
 
@@ -61,7 +48,7 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/{id}/nota","notas")->name("student.notas");//->middleware("verificar.rol")
     
-    Route::get("student/settings","setting")->name("student.settings");
+    Route::get("student/settings","settings")->name("student.settings");
 
     Route::put("student/settings/add","addSettings")->name("student.addSettings");
 

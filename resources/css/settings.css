@@ -1,0 +1,11 @@
+.input-container{
+    display: block;
+    padding: 100px;
+    margin: 15px;
+    background-color: bisque;
+}
+
+.div-group{
+    position: relative;
+    margin: 20px;
+}

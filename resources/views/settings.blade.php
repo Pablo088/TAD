@@ -1,36 +1,46 @@
 @extends('layouts')
 
+@section('header')
+    @vite('resources/css/settings.css')
+@stop
+
 @section('content')
+    <div class="content-body">
+        <form action="{{route('student.addSettings')}}" method="post">
+            @csrf
+            @method("put")    
+            <div class="input-container">
+                <div class="div-group">
+                    <h4>Dias de Clase</h4>
+                    <input type="number" name="dias_clases" value="{{$settings->dias_clases}}" class="form-control">
+                </div>
 
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand mx-2">TAD</a>
-        <div class="me-auto">
-            <a href="{{route('student.index')}}"> <button class="btn btn-outline-info">Inicio</button></a>
-            <a href="{{route('student.menu')}}"><button class="btn btn-outline-info">Menu</button></a>
-            <a href="{{route('student.settings')}}"><button class="btn btn-outline-light">Configuración</button></a>
-        </div>
-    </nav>
+                <div class="div-group">
+                    <h4>Promedio de Promoción</h4>
+                    <input type="number" name="promedio_promocion" value="{{$settings->promedio_promocion}}" class="form-control">
+                </div>
 
-    <form action="{{route('student.addSettings')}}" method="post">
-        @csrf
-        @method("put")
+                <div class="div-group">
+                    <h4>Promedio de Regularidad</h4>
+                    <input type="number" name="promedio_regularidad" value="{{$settings->promedio_regularidad}}" class="form-control">
+                </div>
 
-        <h3>Dias de Clase</h3>
-        <input type="number" name="dias_clases">
+                <div class="div-group">
+                    <h4>Edad Minima (Para entrar a la facultad)</h4>
+                    <input type="number" name="edad_minima" value="{{$settings->edad_minima}}" class="form-control">
+                </div>
 
-        <h3>Promedio de Promoción</h3>
-        <input type="number" name="promedio_promocion">
+                <div class="div-group">
+                   <button type="submit" class="btn btn-outline-primary">Enviar</button>
+                </div>
+            </div> 
+        </form>
 
-        <h3>Promedio de Regularidad</h3>
-        <input type="number" name="promedio_regularidad">
-
-        <h3>Edad Minima (Para entrar a la facultad)</h3>
-        <input type="number" name="edad_minima">
-
-        <button type="submit">Enviar</button>
-    </form>
-
-    @if(session('success'))
-        <div class="alert alert-success text-center">{{session('success')}}</div>
-    @endif
-@endsection
+        @if(session('success'))
+            <div class="alert alert-success text-center">{{session('success')}}</div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-error text-center">{{session('error')}}</div>
+        @endif
+    </div>
+@stop

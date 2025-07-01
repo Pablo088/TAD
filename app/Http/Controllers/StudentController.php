@@ -27,14 +27,20 @@ class StudentController extends Controller
     public function menu(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("m-d");
-        $student = Student::select("students.id","dni","name","lastName","birthDate","students.year","division")->join("divisions","divisions.student_idd","=","students.id")->get();
-        $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")->select("name","lastName")->get();
+        $student = Student::select("students.id","dni","name","lastName","birthDate","students.year","division")
+        ->join("divisions","divisions.student_idd","=","students.id")->get();
+
+        $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")
+        ->select("name","lastName")->get();
+
         return view("studentMenu",compact("student","cumpleanios"));
     }
 
     public function filter(Request $request){
 
-        $student = Student::where("students.year",$request->filter)->join("divisions","students.id","=","divisions.student_idd")->get();
+        $student = Student::where("students.year",$request->filter)
+        ->join("divisions","students.id","=","divisions.student_idd")->get();
+
         return view("studentFilter",compact("student"));
     }
 
@@ -62,17 +68,23 @@ class StudentController extends Controller
             "year"=>"required",
             "division"=>"required"
         ]);
-        
-        $student = new Student();
+    
+        try{
+            $student = new Student();
 
-        $student->dni = $request->dni;
-        $student->name = $request->name;
-        $student->lastName = $request->lastName;
-        $student->birthDate = $request->birthDate;
-        $student->year = $request->year;
-        $student->division = $request->division;
+            $student->dni = $request->dni;
+            $student->name = $request->name;
+            $student->lastName = $request->lastName;
+            $student->birthDate = $request->birthDate;
+            $student->year = $request->year;
+            $student->division = $request->division;
 
-        $student->save();
+            $student->save();
+            unset($student);
+        } catch (Exception $e){
+            unset($student);
+            return redirect()->route("student.new")->with("error","Ocurrio un error al intentar dar de alta al alumno. ",$e);
+        }    
 
         return redirect()->route("student.new");
     }
@@ -103,16 +115,22 @@ class StudentController extends Controller
             "division"=>"required"
         ]);
         
-        $students = Student::find($student);
-       
-        $students->dni = $request->dni;
-        $students->name = $request->name;
-        $students->lastName = $request->lastName;
-        $students->birthDate = $request->birthDate;
-        $student->year = $request->year;
-        $students->division = $request->division;
+        try{
+            $students = Student::find($student);
+            
+            $students->dni = $request->dni;
+            $students->name = $request->name;
+            $students->lastName = $request->lastName;
+            $students->birthDate = $request->birthDate;
+            $student->year = $request->year;
+            $students->division = $request->division;
 
-        $students->save();
+            $students->save();
+            unset($students);
+        } catch(Exception $e){
+            unset($students);
+            return redirect()->route("student.edit")->with("error","Ocurrio un error al intentar actualizar al alumno. ",$e);
+        }
 
         return redirect()->route("student.menu", $student);
     }
@@ -129,8 +147,15 @@ class StudentController extends Controller
             $log->save();
         } 
 
-        $student = Student::find($id);
-        $student->delete();
+        try{
+            $student = Student::find($id);
+            $student->delete();
+            unset($student);
+        } catch(Exception $e) {
+            unset($student);
+            return redirect()->route("student.menu")->with("error","Ocurrió un error al intentar eliminar al alumno. ".$e);
+        }
+        
         return redirect()->route("student.menu");
     }
     
@@ -168,10 +193,6 @@ class StudentController extends Controller
         }
     }
 
-    public function settings(){
-        return view("settings");
-    }
-
     public function notas($id){
         return view("notas",compact("id"));
     }
@@ -196,16 +217,15 @@ class StudentController extends Controller
         return redirect()->route("student.menu");
     }        
 
-    public function setting(){
-        return view("settings");
+    public function settings(Setting $settings){
+        $settings = Setting::first();
+        //dd($settings);
+        return view("settings",compact("settings"));
     }      
 
-    public function addSettings(Setting $setting,Request $request){
-        
-            $settings = Setting::first();
-
+    public function addSettings(Setting $setting,Request $request){     
+        $settings = Setting::first();
             if($settings == null){
-                $settings = new Setting();
 
                 $request -> validate([
                     "dias_clases" => "required",
@@ -214,15 +234,23 @@ class StudentController extends Controller
                     "edad_minima" => "required"
                 ]);
         
-                $settings->dias_clases = $request->dias_clases;
-                $settings->promedio_promocion = $request->promedio_promocion;
-                $settings->promedio_regularidad = $request->promedio_regularidad;
-                $settings->edad_minima = $request->edad_minima;
-        
-                $settings->save();
-        
-                return redirect()->route("student.settings")->with(["success"=>"¡Se cargó la configuración!"]);
-            }else if($settings !== null){
+                try{
+                    $settings = new Setting();
+
+                    $settings->dias_clases = $request->dias_clases;
+                    $settings->promedio_promocion = $request->promedio_promocion;
+                    $settings->promedio_regularidad = $request->promedio_regularidad;
+                    $settings->edad_minima = $request->edad_minima;
+                    
+                    $settings->save();
+                } catch (Exception $e) {
+                    unset($settings);
+                    return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar cargar la configuración. ".$e);
+                }
+                
+                unset($settings);
+                return redirect()->route("student.settings")->with("success","¡Se cargó la configuración!");
+            }else{
 
                 $request -> validate([
                     "dias_clases" => "required",
@@ -231,14 +259,21 @@ class StudentController extends Controller
                     "edad_minima" => "required"
                 ]);
                 
-                $settings->dias_clases = $request->dias_clases;
-                $settings->promedio_promocion = $request->promedio_promocion;
-                $settings->promedio_regularidad = $request->promedio_regularidad;
-                $settings->edad_minima = $request->edad_minima;
-        
-                $settings->save();
-        
-                return redirect()->route("student.settings")->with(["success"=>"¡Se actualizó la configuración!"]);
+                try{
+                    $settings->dias_clases = $request->dias_clases;
+                    $settings->promedio_promocion = $request->promedio_promocion;
+                    $settings->promedio_regularidad = $request->promedio_regularidad;
+                    $settings->edad_minima = $request->edad_minima;
+                    
+                    $settings->save();
+                } catch (Exception $e) {
+                    unset($settings);
+                    return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar actualizar la configuración. ".$e);
+                }
+                
+
+                unset($settings);
+                return redirect()->route("student.settings")->with("success","¡Se actualizó la configuración!");
             }
     }      
 
