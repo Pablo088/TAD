@@ -5,23 +5,25 @@
 @stop
 
 @section('content')
-    <div id="main-content">
-        <a class="d-flex justify-content-center my-3" href="{{route('student.new')}}"><button class="btn btn-primary">Agregar Alumno</button></a>
-        <a class="d-flex justify-content-center my-3" href="{{route('list.pdf')}}"><button class="btn btn-primary">pdf</button></a>
-        <a class="d-flex justify-content-center my-3" href="{{route('report.pdf')}}"><button class="btn btn-primary">Reporte</button></a>
-
-        <form id="form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
-            <select name="filter" class="form-control-sm text-center" onchange="enviar()">
-                <option value="">Filtro</option>
-                <option value="1">Primer Año</option>
-                <option value="2">Segundo Año</option>
-                <option value="3">Tercer Año</option>
-                <option value="4">Cuarto Año</a></option>
-                <option value="5">Quinto Año</option>
-                <option value="6">Sexto Año</option>
-            </select>
-        </form>
-   
+    <div class="main-content">
+        <div id="general-actions">
+            <form id="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
+                <select name="filter" class="form-control text-center" onchange="enviar()" id="filter">
+                    <option value="">Filtro por Año</option>
+                    <option value="1">Primer Año</option>
+                    <option value="2">Segundo Año</option>
+                    <option value="3">Tercer Año</option>
+                    <option value="4">Cuarto Año</a></option>
+                    <option value="5">Quinto Año</option>
+                    <option value="6">Sexto Año</option>
+                </select>
+            </form>
+            <div id="general-buttons">
+                <a class="mx-1" href="{{route('student.new')}}"><button class="btn btn-outline-primary">Agregar Alumno</button></a>
+                <a class="mx-1" href="{{route('list.pdf')}}"><button class="btn btn-outline-secondary">Exportar a PDF</button></a>
+                <a class="mx-1" href="{{route('report.pdf')}}"><button class="btn btn-outline-secondary">Reporte</button></a>
+            </div>
+        </div>
 
         @if (session('success'))
             <div class="alert alert-success text-center">
@@ -37,7 +39,7 @@
         @endforeach
         <script>
             function confirmar(){
-                let respuesta = confirm("¿Queres borrrar este registro?");
+                let respuesta = confirm("¿Estás seguro? Esta acción no se puede deshacer");
                 if(respuesta == true){
                     return true;
                 } else{
@@ -46,7 +48,7 @@
             }
         </script>
         <div>
-            <table class="table table-primary table-striped table-hover table-borderless mb-3">
+            <table class="table table-primary table-bordered table-hover table-responsive-sm">
                 <thead>
                     <tr>
                         <th>DNI</th>
@@ -67,20 +69,19 @@
                         <th>{{$students->birthDate}}</th>
                         <th>{{$students->year}}</th>
                         <th>{{$students->division}}</th>
-                        <th style="padding: 5px;">
-                            <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning">Modificar</button></a>
+                        <th style="display: grid;">
+                            <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
 
+                            <a href="{{route('student.assistList',$students->id)}}"><button class="btn btn-info my-1">Cantidad de Asistencias</button></a>
                             
-                            <a href="{{route('student.assistList',$students->id)}}"><button class="btn btn-info">Cantidad de Asistencias</button></a>
+                            <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info my-1">Condicion</button></a>
                             
-                            <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info">Condicion</button></a>
-                            
-                            <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning">Agregar Nota</button></a>
+                            <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning my-1">Agregar Nota</button></a>
                             
                             <form action="{{route('student.destroy',$students->id)}}" method="post">
                                 @csrf  
                                 @method("delete")
-                                <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn">Eliminar</button>
                             </form>
                         </th>
                     </tr>
@@ -90,7 +91,7 @@
         </div>
         <script>
             function enviar(){
-                let form = document.getElementById("form");
+                let form = document.getElementById("filter-form");
                 form.submit();
             }
         </script>

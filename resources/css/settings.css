@@ -1,8 +1,12 @@
-.input-container{
+.main-content{
+    background-color: bisque;
+    border-radius: 20px;
+}
+
+form{
     display: block;
     padding: 100px;
     margin: 15px;
-    background-color: bisque;
 }
 
 .div-group{

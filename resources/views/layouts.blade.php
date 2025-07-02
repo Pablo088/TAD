@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     @yield("header")
 </head>
-<body style="background-image: url('/imgs/tad-icon.png'); background-size: cover; background-repeat: no-repeat;">   
+<body style="background-image: url('/imgs/tad-icon.png'); background-size: contain;">   
     <x-application-navbar>
     </x-application-navbar>
     
