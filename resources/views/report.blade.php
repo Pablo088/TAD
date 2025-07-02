@@ -2,7 +2,7 @@
 
 @section('content')
     <div>
-        <table class="table table-primary table-striped table-hover table-borderless my-3">
+        <table class="table table-primary table-bordered table-hover my-3">
             <thead>
                 <tr>
                     <th>DNI</th>

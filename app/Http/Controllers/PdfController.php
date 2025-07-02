@@ -26,7 +26,7 @@ class PdfController extends Controller
                         ->where("prom",">=",6) 
                         ->having(Db::raw("count(assists.created_at)"),">=",6)
                         ->get();
-
+        dd($student);
         $pdf = Pdf::loadView('report', compact("student"));
         
         return $pdf->stream('report.pdf');

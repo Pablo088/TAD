@@ -1,11 +1,11 @@
 @extends('layouts')
 
-@section("header")
+@section("head")
     @vite("resources/css/student/student-menu.css")
 @stop
 
 @section('content')
-    <div class="main-content">
+    @section("content_header")
         <div id="general-actions">
             <form id="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
                 <select name="filter" class="form-control text-center" onchange="enviar()" id="filter">
@@ -24,76 +24,79 @@
                 <a class="mx-1" href="{{route('report.pdf')}}"><button class="btn btn-outline-secondary">Reporte</button></a>
             </div>
         </div>
+    @stop
 
-        @if (session('success'))
-            <div class="alert alert-success text-center">
-                {{ session('success') }}
-            </div>
-        @endif
-        @foreach($cumpleanios as $cumple)   
-            @if($cumple)
-                <div class="alert alert-success text-center">
-                    ¡Muy feliz cumpleaños {{$cumple->name}} {{$cumple->lastName}}!
-                </div>
-            @endif    
-        @endforeach
-        <script>
-            function confirmar(){
-                let respuesta = confirm("¿Estás seguro? Esta acción no se puede deshacer");
-                if(respuesta == true){
-                    return true;
-                } else{
-                    return false;
-                }
-            }
-        </script>
-        <div>
-            <table class="table table-primary table-bordered table-hover table-responsive-sm">
-                <thead>
-                    <tr>
-                        <th>DNI</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Fecha de Nacimiento</th>
-                        <th>Año</th>
-                        <th>Division</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach($student as $students)
-                    <tr class="table-success">
-                        <th>{{$students->dni}}</th>
-                        <th>{{$students->name}}</th>
-                        <th>{{$students->lastName}}</th>
-                        <th>{{$students->birthDate}}</th>
-                        <th>{{$students->year}}</th>
-                        <th>{{$students->division}}</th>
-                        <th style="display: grid;">
-                            <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
-
-                            <a href="{{route('student.assistList',$students->id)}}"><button class="btn btn-info my-1">Cantidad de Asistencias</button></a>
-                            
-                            <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info my-1">Condicion</button></a>
-                            
-                            <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning my-1">Agregar Nota</button></a>
-                            
-                            <form action="{{route('student.destroy',$students->id)}}" method="post">
-                                @csrf  
-                                @method("delete")
-                                <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn">Eliminar</button>
-                            </form>
-                        </th>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+    @if (session('success'))
+        <div class="alert alert-success text-center">
+            {{ session('success') }}
         </div>
-        <script>
-            function enviar(){
-                let form = document.getElementById("filter-form");
-                form.submit();
+    @endif
+    
+    @foreach($cumpleanios as $cumple)   
+        @if($cumple)
+            <div class="alert alert-success text-center">
+                ¡Muy feliz cumpleaños {{$cumple->name}} {{$cumple->lastName}}!
+            </div>
+        @endif    
+    @endforeach
+    
+    <script>
+        function confirmar(){
+            let respuesta = confirm("¿Estás seguro? Esta acción no se puede deshacer");
+            if(respuesta == true){
+                return true;
+            } else{
+                return false;
             }
-        </script>
+        }
+    </script>
+    
+    <div>
+        <table class="table table-primary table-bordered table-hover table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Año</th>
+                    <th>Division</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach($student as $students)
+                <tr class="table-success">
+                    <th>{{$students->dni}}</th>
+                    <th>{{$students->name}}</th>
+                    <th>{{$students->lastName}}</th>
+                    <th>{{$students->birthDate}}</th>
+                    <th>{{$students->year}}</th>
+                    <th>{{$students->division}}</th>
+                    <th style="display: grid;">
+                        <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
+                        <a href="{{route('student.assistList',$students->id)}}"><button class="btn btn-info my-1">Cantidad de Asistencias</button></a>
+                        
+                        <a href="{{route('student.condition',$students->id)}}"><button class="btn btn-info my-1">Condicion</button></a>
+                        
+                        <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning my-1">Agregar Nota</button></a>
+                        
+                        <form action="{{route('student.destroy',$students->id)}}" method="post">
+                            @csrf  
+                            @method("delete")
+                            <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn">Eliminar</button>
+                        </form>
+                    </th>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
+    
+    <script>
+        function enviar(){
+            let form = document.getElementById("filter-form");
+            form.submit();
+        }
+    </script>
 @endsection

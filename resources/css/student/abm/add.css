@@ -1,0 +1,10 @@
+#add-form{
+    padding: auto;
+    margin: 50px;
+    top: 50%;
+    background-color: rgb(251, 212, 164);
+}
+.campo-container{
+    padding: 10px;
+    margin: 10px;
+}

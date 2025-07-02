@@ -1,11 +1,6 @@
-.main-content{
-    background-color: bisque;
-    border-radius: 20px;
-}
-
 form{
     display: block;
-    padding: 100px;
+    padding: 50px;
     margin: 15px;
 }
 

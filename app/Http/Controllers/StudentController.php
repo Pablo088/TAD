@@ -96,7 +96,7 @@ class StudentController extends Controller
     
     public function update(Request $request,$student){
         $log = new Logging();
-        $idUsuario =  Auth::user()->id;
+        $idUsuario = Auth::user()->id??null;
 
         if($idUsuario !== null){
             $log->user_id = Auth::user()->id;
@@ -107,12 +107,12 @@ class StudentController extends Controller
         }
 
         $request->validate([
-            "dni"=>"required",
-            "name"=>"required",
-            "lastName"=>"required",
-            "birthDate"=>"required",
-            "year"=>"required",
-            "division"=>"required"
+            "dni" => ["required","int"],
+            "name" => ["required","string"],
+            "lastName" => ["required","string"],
+            "birthDate" => ["required","date"],
+            "year" => ["required","int"],
+            "division" => ["required","string"]
         ]);
         
         try{
@@ -132,7 +132,7 @@ class StudentController extends Controller
             return redirect()->route("student.edit")->with("error","Ocurrio un error al intentar actualizar al alumno. ",$e);
         }
 
-        return redirect()->route("student.menu", $student);
+        return redirect()->back(compact($student))->with("success","¡Se actualizaron los datos del alumno!");
     }
 
     public function destroy(Request $request,$id){

@@ -1,16 +1,6 @@
-.main-content{
-    display: block;
-    margin: 50px;
-    padding: 20px;
-    background-color: bisque;
-    border-radius: 20px;
-}
-
 #general-actions{
     display: flex;
-    padding: auto;
     margin-top: 20px;
-    margin-bottom: 15px;
     flex-direction:row;
     justify-content: space-between;   
 }
