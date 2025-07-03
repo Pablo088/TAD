@@ -15,7 +15,7 @@ class PdfController extends Controller
 {
     public function pdf(){
         $student = Student::All();
-        $pdf = Pdf::loadView('list', compact("student"));
+        $pdf = Pdf::loadView('student.list', compact("student"));
         return $pdf->stream('list.pdf');
     }
     public function reportFilter(){
@@ -27,7 +27,7 @@ class PdfController extends Controller
                         ->having(Db::raw("count(assists.created_at)"),">=",6)
                         ->get();
         dd($student);
-        $pdf = Pdf::loadView('report', compact("student"));
+        $pdf = Pdf::loadView('student.report', compact("student"));
         
         return $pdf->stream('report.pdf');
     }

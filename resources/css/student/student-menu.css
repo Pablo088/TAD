@@ -1,12 +1,18 @@
 #general-actions{
+    margin: 10px;
     display: flex;
-    margin-top: 20px;
     flex-direction:row;
-    justify-content: space-between;   
+    justify-content: center;   
 }
 
-#filter-form{
-    width: 36%;
-    height: 35%;
+#filters-container{
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.filter-form{
+    width: 25%;
+    height: 25%;
     border-radius: 10px;
+    margin-right: 15px;
 }

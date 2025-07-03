@@ -6,17 +6,6 @@
 
 @section("content_header")
     <div id="general-actions">
-        <form id="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
-            <select name="filter" class="form-control text-center" onchange="enviar()" id="filter">
-                <option value="">Filtro por Año</option>
-                <option value="1">Primer Año</option>
-                <option value="2">Segundo Año</option>
-                <option value="3">Tercer Año</option>
-                <option value="4">Cuarto Año</a></option>
-                <option value="5">Quinto Año</option>
-                <option value="6">Sexto Año</option>
-            </select>
-        </form>
         <div id="general-buttons">
             <a class="mx-1" href="{{route('student.new')}}"><button class="btn btn-outline-primary">Agregar Alumno</button></a>
             <a class="mx-1" href="{{route('list.pdf')}}"><button class="btn btn-outline-secondary">Exportar a PDF</button></a>
@@ -50,30 +39,54 @@
             }
         }
     </script>
-    
+
+    <div id="filters-container">
+        <form class="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
+            <input type="search" name="input-filter" id="input-filter" class="form-control" placeholder="Buscar por nombre y apellido">
+        </form>
+
+        <form class="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
+            <select name="select-filter" id="select-filter" class="form-control text-center" onchange="enviar()" id="filter">
+                <option value="">Filtro por Año</option>
+                <option value="1">Primer Año</option>
+                <option value="2">Segundo Año</option>
+                <option value="3">Tercer Año</option>
+                <option value="4">Cuarto Año</a></option>
+                <option value="5">Quinto Año</option>
+                <option value="6">Sexto Año</option>
+            </select>
+        </form>
+
+        <form class="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
+            <select name="select-filter" id="select-filter" class="form-control text-center" onchange="enviar()" id="filter">
+                <option value="">Filtro por Año</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+            </select>
+        </form>
+    </div>
+
     <div>
         <table class="table table-primary table-bordered table-hover table-responsive">
             <thead>
                 <tr>
-                    <th>DNI</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Fecha de Nacimiento</th>
-                    <th>Año</th>
-                    <th>Division</th>
-                    <th>Acciones</th>
+                    <th class="text-end">DNI</th>
+                    <th class="text-center">Nombre Completo</th>
+                    <th class="text-center">Fecha de Nacimiento</th>
+                    <th class="text-center">Año</th>
+                    <th class="text-center">Division</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
             @foreach($student as $students)
                 <tr class="table-success">
-                    <td>{{$students->dni}}</td>
-                    <td>{{$students->name}}</td>
-                    <td>{{$students->lastName}}</td>
-                    <td>{{$students->birthDate}}</td>
-                    <td>{{$students->year}}</td>
-                    <td>{{$students->division}}</td>
-                    <td style="display: grid;">
+                    <td class="text-end">{{$students->dni}}</td>
+                    <td class="text-center">{{$students->name}} {{$students->lastName}}</td>
+                    <td class="text-center">{{$students->birthDate}}</td>
+                    <td class="text-center">{{$students->year}}</td>
+                    <td class="text-center">{{$students->division}}</td>
+                    <td class="text-center" style="display: grid;">
                         <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
                         
                         <a href="{{route('student.info',$students->id)}}"><button class="btn btn-info my-1">Condicion General</button></a>
