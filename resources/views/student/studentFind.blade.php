@@ -36,4 +36,4 @@
             <a href="{{route('student.menu')}}"><button class="btn btn-danger">No</button></a>
             @endforeach
         </div>
-@endsection
+@stop

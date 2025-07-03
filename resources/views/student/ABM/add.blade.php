@@ -4,18 +4,16 @@
     @vite("resources/css/student/abm/add.css")
 @stop
 
-@section('content')
-    @section("content_header")
-        <h1>Alta de alumno</h1>
-    @stop
+@section("content_header")
+    <h1>Alta de alumno</h1>
+@stop
 
-    <div>
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{$error}}</li>
-            @endforeach
-        </ul>
-    </div>
+@section('content')
+    @section("content_messages")
+        @foreach($errors->all() as $error)
+            {{$error}}
+        @endforeach
+    @stop
     
     <form action="{{route('student.add')}}" method="post" id="add-form">
         @csrf
@@ -64,8 +62,8 @@
             <button type="submit" class="btn btn-primary">Agregar</button>
         </div>
     </form>
-    
-    <footer id="btn-volver">
-        <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
-    </footer>
-@endsection
+@stop
+
+@section("content_footer")
+    <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
+@stop

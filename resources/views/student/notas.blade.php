@@ -4,11 +4,11 @@
     @vite("resources/css/student/notas.css")
 @stop
 
-@section('content')
-    @section("content_header")
-        <h1>Ingresa las notas del alumno</h1>
-    @stop
+@section("content_header")
+    <h1>Ingresa las notas del alumno</h1>
+@stop
 
+@section('content')
     <form action="{{route('subirNotas')}}" method="post">
         @csrf
         <input type="hidden" name="id" value="{{$id}}" class="form-control">
@@ -20,8 +20,8 @@
         <input type="number" name="nota3" min="1" max="10" class="form-control">
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
+@stop
 
-    <footer id="content-footer">
-        <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
-    </footer>
-@endsection
+@section("content_footer")
+    <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
+@stop

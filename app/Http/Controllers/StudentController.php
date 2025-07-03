@@ -24,6 +24,10 @@ use App\Models\Setting;
 
 class StudentController extends Controller
 {
+    public function studentIndex(){
+        return view("studentIndex");
+    }
+
     public function menu(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("m-d");
@@ -33,27 +37,59 @@ class StudentController extends Controller
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")
         ->select("name","lastName")->get();
 
-        return view("studentMenu",compact("student","cumpleanios"));
+        return view("student.studentMenu",compact("student","cumpleanios"));
     }
+
+     public function new(){
+        return view("student.ABM.add");
+    }
+
+    public function edit($id){
+        $student = Student::find($id);
+        return view("student.ABM.edit", compact("student"));
+    }
+
+    public function notas($id){
+        return view("student.notas",compact("id"));
+    }
+
+    public function assistList($id){
+        
+        return view("student.ABM.assistList",compact("student_assist"));
+    }
+
+    public function info($id){
+        $studentAssist = Assist::where("student_ida",$id)->count();
+
+        $diasClases = Setting::select("dias_clases")->first();
+
+        $assistPercentage = round(($studentAssist * 100) / $diasClases->dias_clases);
+
+        $student_assist = Assist::select("created_at")->where("student_ida",$id)->get();
+       
+        return view("student.studentInfo",compact("assistPercentage","student_assist"));
+    }      
+
+    public function settings(Setting $settings){
+        $settings = Setting::first();
+        //dd($settings);
+        return view("settings",compact("settings"));
+    }   
 
     public function filter(Request $request){
 
         $student = Student::where("students.year",$request->filter)
         ->join("divisions","students.id","=","divisions.student_idd")->get();
 
-        return view("studentFilter",compact("student"));
-    }
-
-    public function new(){
-        return view("ABM.add");
+        return view("student.studentFilter",compact("student"));
     }
 
     public function add(Request $request){
         $log = new Logging();
-        $idUsuario =  Auth::user()->id;
+        $idUsuario =  Auth::user()->id??null;
 
         if($idUsuario !== null){
-            $log->user_id = Auth::user()->id;
+            $log->user_id = $idUsuario;
             $log->user_nav = $request->header('user-agent');
             $log->user_ip = $request->ip('user-agent');
             $log->user_action = "alta";
@@ -61,13 +97,20 @@ class StudentController extends Controller
         }
 
         $request->validate([
-            "dni"=>"required",
-            "name"=>"required",
-            "lastName"=>"required",
-            "birthDate"=>"required",
-            "year"=>"required",
-            "division"=>"required"
+            "dni"=> ["required","int"],
+            "name"=> ["required","string"],
+            "lastName"=> ["required","string"],
+            "birthDate"=> ["required","date"],
+            "year"=> ["required","string"],
+            "division"=> ["required","string"]
         ]);
+
+        //bloque para validar si el alumno ya existe
+        $studentExist = Student::where("dni",$request->dni)->get();
+
+        if($studentExist !== null){
+            return redirect()->back()->with("error","Ya existe un alumno con este dni");
+        }
     
         try{
             $student = new Student();
@@ -83,15 +126,10 @@ class StudentController extends Controller
             unset($student);
         } catch (Exception $e){
             unset($student);
-            return redirect()->route("student.new")->with("error","Ocurrio un error al intentar dar de alta al alumno. ",$e);
+            return redirect()->back()->with("error","Ocurrio un error al intentar dar de alta al alumno. ",$e);
         }    
 
-        return redirect()->route("student.new");
-    }
-
-    public function edit($id){
-        $student = Student::find($id);
-        return view("ABM.edit", compact("student"));
+        return redirect()->back()->with("success","¡El alumno fue dado de alta!");
     }
     
     public function update(Request $request,$student){
@@ -111,18 +149,19 @@ class StudentController extends Controller
             "name" => ["required","string"],
             "lastName" => ["required","string"],
             "birthDate" => ["required","date"],
-            "year" => ["required","int"],
+            "year" => ["required","string"],
             "division" => ["required","string"]
         ]);
-        
+
         try{
             $students = Student::find($student);
+            //dd($request);
             
             $students->dni = $request->dni;
             $students->name = $request->name;
             $students->lastName = $request->lastName;
             $students->birthDate = $request->birthDate;
-            $student->year = $request->year;
+            $students->year = $request->year;
             $students->division = $request->division;
 
             $students->save();
@@ -132,7 +171,7 @@ class StudentController extends Controller
             return redirect()->route("student.edit")->with("error","Ocurrio un error al intentar actualizar al alumno. ",$e);
         }
 
-        return redirect()->back(compact($student))->with("success","¡Se actualizaron los datos del alumno!");
+        return redirect()->back()->with("success","¡Se actualizaron los datos del alumno!");
     }
 
     public function destroy(Request $request,$id){
@@ -171,17 +210,8 @@ class StudentController extends Controller
             $assist->save();
             return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
         } else{
-                return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
-              } 
-    }
-    
-    public function assistList($id){
-        $student_assist = Assist::select("created_at")->where("student_ida",$id)->get();
-        return view("ABM.assistList",compact("student_assist"));
-    }
-
-    public function studentIndex(){
-        return view("studentIndex");
+            return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
+        } 
     }
 
     public function findStudent(Request $request){
@@ -191,10 +221,6 @@ class StudentController extends Controller
         } else{
             return redirect()->route("student.index")->with(["error"=>"El dni del alumno que ingresaste no existe"]);
         }
-    }
-
-    public function notas($id){
-        return view("notas",compact("id"));
     }
 
     public function subirNotas(Request $request){
@@ -215,75 +241,56 @@ class StudentController extends Controller
         $notas->save(); 
 
         return redirect()->route("student.menu");
-    }        
-
-    public function settings(Setting $settings){
-        $settings = Setting::first();
-        //dd($settings);
-        return view("settings",compact("settings"));
-    }      
+    }           
 
     public function addSettings(Setting $setting,Request $request){     
         $settings = Setting::first();
-            if($settings == null){
-
-                $request -> validate([
-                    "dias_clases" => "required",
-                    "promedio_promocion" => "required",
-                    "promedio_regularidad" => "required",
-                    "edad_minima" => "required"
-                ]);
         
-                try{
-                    $settings = new Setting();
-
-                    $settings->dias_clases = $request->dias_clases;
-                    $settings->promedio_promocion = $request->promedio_promocion;
-                    $settings->promedio_regularidad = $request->promedio_regularidad;
-                    $settings->edad_minima = $request->edad_minima;
-                    
-                    $settings->save();
-                } catch (Exception $e) {
-                    unset($settings);
-                    return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar cargar la configuración. ".$e);
-                }
+        if($settings == null){
+            $request -> validate([
+                "dias_clases" => "required",
+                "promedio_promocion" => "required",
+                "promedio_regularidad" => "required",
+                "edad_minima" => "required"
+            ]);
+    
+            try{
+                $settings = new Setting();
+                $settings->dias_clases = $request->dias_clases;
+                $settings->promedio_promocion = $request->promedio_promocion;
+                $settings->promedio_regularidad = $request->promedio_regularidad;
+                $settings->edad_minima = $request->edad_minima;
                 
+                $settings->save();
+            } catch (Exception $e) {
                 unset($settings);
-                return redirect()->route("student.settings")->with("success","¡Se cargó la configuración!");
-            }else{
-
-                $request -> validate([
-                    "dias_clases" => "required",
-                    "promedio_promocion" => "required",
-                    "promedio_regularidad" => "required",
-                    "edad_minima" => "required"
-                ]);
-                
-                try{
-                    $settings->dias_clases = $request->dias_clases;
-                    $settings->promedio_promocion = $request->promedio_promocion;
-                    $settings->promedio_regularidad = $request->promedio_regularidad;
-                    $settings->edad_minima = $request->edad_minima;
-                    
-                    $settings->save();
-                } catch (Exception $e) {
-                    unset($settings);
-                    return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar actualizar la configuración. ".$e);
-                }
-                
-
-                unset($settings);
-                return redirect()->route("student.settings")->with("success","¡Se actualizó la configuración!");
+                return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar cargar la configuración. ".$e);
             }
-    }      
-
-    public function condition($id){
-        $studentAssist = Assist::where("student_ida",$id)->count();
-
-        $diasClases = Setting::select("dias_clases")->first();
-
-        $assistPercentage = round(($studentAssist * 100) / $diasClases->dias_clases);
-       
-        return view("studentCondition",compact("assistPercentage"));
-    }            
+            
+            unset($settings);
+            return redirect()->route("student.settings")->with("success","¡Se cargó la configuración!");
+        }else{
+            $request -> validate([
+                "dias_clases" => "required",
+                "promedio_promocion" => "required",
+                "promedio_regularidad" => "required",
+                "edad_minima" => "required"
+            ]);
+            
+            try{
+                $settings->dias_clases = $request->dias_clases;
+                $settings->promedio_promocion = $request->promedio_promocion;
+                $settings->promedio_regularidad = $request->promedio_regularidad;
+                $settings->edad_minima = $request->edad_minima;
+                
+                $settings->save();
+            } catch (Exception $e) {
+                unset($settings);
+                return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar actualizar la configuración. ".$e);
+            }
+            
+            unset($settings);
+            return redirect()->route("student.settings")->with("success","¡Se actualizó la configuración!");
+        }
+    }        
 }

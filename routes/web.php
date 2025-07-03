@@ -44,8 +44,6 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::post("student/addAssist","addAssist")->name("student.addAssist");
 
-    Route::get("student/{id}/assists/list","assistList")->name("student.assistList");
-
     Route::get("student/{id}/nota","notas")->name("student.notas");//->middleware("verificar.rol")
     
     Route::get("student/settings","settings")->name("student.settings");
@@ -54,7 +52,7 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::post("student/notas","subirNotas")->name("subirNotas");
 
-    Route::get("student/{id}/condition","condition")->name("student.condition");
+    Route::get("student/info/{id}","info")->name("student.info");
 });
 
 Route::controller(PdfController::class)->group(function(){

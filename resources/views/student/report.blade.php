@@ -1,5 +1,9 @@
 @extends('layouts')
 
+@section("content_header")
+    <h1>Reporte de Alumnos Promocionados</h1>
+@stop
+
 @section('content')
     <div>
         <table class="table table-primary table-bordered table-hover my-3">
@@ -29,4 +33,4 @@
             </tbody>
         </table>
     </div>
-@endsection
+@stop

@@ -8,6 +8,26 @@
     @section("content_header")
         <h1>Editar Alumno</h1>
     @stop
+
+    @section("content_messages")
+        @if(session("success"))
+            <div class="alert alert-success">
+                {{session("success")}}            
+            </div>
+        @endif
+        
+        @if(session("error"))
+            <div class="alert alert-success">
+                {{session("error")}}            
+            </div>
+        @endif
+
+        @foreach($errors->all() as $error)
+            <div class="alert alert-error">
+                {{$error}}
+            </div>
+        @endforeach
+    @stop
     
     <div id="form-content">
         <form action="{{route('student.update',$student)}}" method="post" id="the-form">
@@ -31,7 +51,7 @@
             </div>
             <div class="input-container">
                 <label for="year">Año</label>
-                <select type="number" name="year" id="year" value="{{old('year')}}" class="form-control">
+                <select type="text" name="year" id="year" value="{{old('year')}}" class="form-control">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -53,13 +73,7 @@
         </form>
     </div>
     
-    <div>
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{$error}}</li>
-            @endforeach
-        </ul>
-    </div>
-    
-    <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
+    @section("content_footer")
+        <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
+    @stop
 @endsection    

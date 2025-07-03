@@ -2,7 +2,10 @@
 
 @section('content')
 
-    <h1 class="my-3 text-center">Ingresá el DNI para encontrar el alumno</h1>
+    @section("content_header")
+        <h1 class="my-3 text-center">Ingresá el DNI para encontrar el alumno</h1>
+    @stop
+    
     <form class="d-flex justify-content-center" action="{{route('student.find')}}" method="get">
         <input class="form-control-lg text-center my-3" type="number" name="dni" placeholder="DNI Alumno">
     </form>
