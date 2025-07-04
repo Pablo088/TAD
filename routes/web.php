@@ -28,7 +28,7 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/find","findStudent")->name("student.find");
 
-    Route::get("student/menu","menu")->name("student.menu");
+    Route::get("student/list","list")->name("student.list");
 
     Route::get("student/filter","filter")->name("student.filter");
 

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Student;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Assist>
@@ -16,8 +17,10 @@ class AssistFactory extends Factory
      */
     public function definition(): array
     {
+        $student = Student::max("id");
+
         return [
-            "student_ida" => fake()->numberBetween($min=1,$max=20)
+            "student_ida" => fake()->numberBetween($min=1,$max=$student)
         ];
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts')
 
 @section("head")
-    @vite("resources/css/student/student-menu.css")
+    @vite("resources/css/student/studentList.css")
 @stop
 
 @section("content_header")
@@ -28,17 +28,6 @@
             </div>
         @endif    
     @endforeach
-    
-    <script>
-        function confirmar(){
-            let respuesta = confirm("¿Estás seguro? Esta acción no se puede deshacer");
-            if(respuesta == true){
-                return true;
-            } else{
-                return false;
-            }
-        }
-    </script>
 
     <div id="filters-container">
         <form class="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
@@ -46,7 +35,7 @@
         </form>
 
         <form class="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
-            <select name="select-filter" id="select-filter" class="form-control text-center" onchange="enviar()" id="filter">
+            <select name="year-filter" id="year-filter" class="form-control text-center" onchange="enviar()" id="filter">
                 <option value="">Filtro por Año</option>
                 <option value="1">Primer Año</option>
                 <option value="2">Segundo Año</option>
@@ -58,8 +47,8 @@
         </form>
 
         <form class="filter-form" class="mb-3 d-flex justify-content-center" action="{{route('student.filter')}}" method="get">
-            <select name="select-filter" id="select-filter" class="form-control text-center" onchange="enviar()" id="filter">
-                <option value="">Filtro por Año</option>
+            <select name="division-filter" id="division-filter" class="form-control text-center" onchange="enviar()" id="filter">
+                <option value="">Filtro por Division</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
             </select>
@@ -67,7 +56,7 @@
     </div>
 
     <div>
-        <table class="table table-primary table-bordered table-hover table-responsive">
+        <table class="table table-primary table-bordered table-hover table-responsive-sm">
             <thead>
                 <tr>
                     <th class="text-end">DNI</th>
@@ -96,7 +85,7 @@
                         <form action="{{route('student.destroy',$students->id)}}" method="post">
                             @csrf  
                             @method("delete")
-                            <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn">Eliminar</button>
+                            <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn" value="{{$students->id}}">Eliminar</button>
                         </form>
                     </td>
                 </tr>
@@ -104,11 +93,15 @@
             </tbody>
         </table>
     </div>
+
+    @section("content_footer")
+        <div style="display: flex;justify-content: space-between;">
+            Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
+            {{$student->links("pagination::bootstrap-4")}}
+        </div>
+    @stop
     
-    <script>
-        function enviar(){
-            let form = document.getElementById("filter-form");
-            form.submit();
-        }
-    </script>
+    @section("scripts")
+        @vite("resources/js/student/studentList.js")
+    @stop
 @stop

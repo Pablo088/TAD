@@ -21,6 +21,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Db;
 
 use App\Models\Setting;
+use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class StudentController extends Controller
 {
@@ -28,16 +30,19 @@ class StudentController extends Controller
         return view("studentIndex");
     }
 
-    public function menu(){
+    public function list(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
-        $dia_actual = Carbon::now()->format("m-d");
+        $dia_actual = Carbon::now()->format("-m-d");
+        
         $student = Student::select("students.id","dni","name","lastName","birthDate","students.year","division")
-        ->join("divisions","divisions.student_idd","=","students.id")->get();
-
+        ->join("divisions","divisions.student_idd","=","students.id")->paginate(10);
+        
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")
-        ->select("name","lastName")->get();
+        ->select("name","lastName","birthDate")->get();
+        
+        //dd($student);
 
-        return view("student.studentMenu",compact("student","cumpleanios"));
+        return view("student.studentList",compact("student","cumpleanios"));
     }
 
      public function new(){
@@ -51,11 +56,6 @@ class StudentController extends Controller
 
     public function notas($id){
         return view("student.notas",compact("id"));
-    }
-
-    public function assistList($id){
-        
-        return view("student.ABM.assistList",compact("student_assist"));
     }
 
     public function info($id){
@@ -75,7 +75,7 @@ class StudentController extends Controller
         //dd($settings);
         return view("settings",compact("settings"));
     }   
-
+ 
     public function filter(Request $request){
 
         $student = Student::where("students.year",$request->filter)
@@ -176,7 +176,7 @@ class StudentController extends Controller
 
     public function destroy(Request $request,$id){
         $log = new Logging();
-        $idUsuario =  Auth::user()->id;
+        $idUsuario =  Auth::user()->id??null;
 
         if($idUsuario !== null){
             $log->user_id = Auth::user()->id;
@@ -192,10 +192,10 @@ class StudentController extends Controller
             unset($student);
         } catch(Exception $e) {
             unset($student);
-            return redirect()->route("student.menu")->with("error","Ocurrió un error al intentar eliminar al alumno. ".$e);
+            return redirect()->route("student.list")->with("error","Ocurrió un error al intentar eliminar al alumno. ".$e);
         }
         
-        return redirect()->route("student.menu");
+        return redirect()->route("student.list");
     }
     
     public function addAssist(Request $request){
@@ -208,7 +208,7 @@ class StudentController extends Controller
         if($dia_actual !== $dia_asistencia){
             $assist->student_ida = $request->id;
             $assist->save();
-            return redirect()->route("student.menu")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
+            return redirect()->route("student.list")->with(["success"=>"¡Se cargó la asistencia del alumno exitosamente!"]);
         } else{
             return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
         } 
@@ -224,23 +224,27 @@ class StudentController extends Controller
     }
 
     public function subirNotas(Request $request){
-        $notas = new Nota();
-
         $request->validate([
-            "id"=>"required",
-            "nota1"=>"required",
-            "nota2"=>"required",
-            "nota3"=>"required"
+            "nota1" => ["required","int"],
+            "nota2" => ["required","int"],
+            "nota3" => ["required","int"]
         ]);
+        
+        try{
+            $notas = new Nota();
+            $notas->student_idn = $request->id;
+            $notas->nota1 = $request->nota1;
+            $notas->nota2 = $request->nota2;
+            $notas->nota3 = $request->nota3;
+            $notas->prom = ($request->nota1+$request->nota2+$request->nota3)/3;
+            $notas->save();
+            unset($notas);
+        } catch (Exception $e){
+            unset($notas);
+            return redirect()->back()->with("error","Ocurrió un error al cargar las notas del alumno. ".$e);
+        } 
 
-        $notas->student_idn = $request->id;
-        $notas->nota1 = $request->nota1;
-        $notas->nota2 = $request->nota2;
-        $notas->nota3 = $request->nota3;
-        $notas->prom = ($request->nota1+$request->nota2+$request->nota3)/3;
-        $notas->save(); 
-
-        return redirect()->route("student.menu");
+        return redirect()->back()->with("success","¡Se cargaron las notas del alumno!");
     }           
 
     public function addSettings(Setting $setting,Request $request){     
