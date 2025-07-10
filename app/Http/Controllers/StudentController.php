@@ -18,11 +18,9 @@ use App\Models\Nota;
 
 use Carbon\Carbon;
 
-use Illuminate\Support\Facades\Db;
-
 use App\Models\Setting;
+
 use Exception;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class StudentController extends Controller
 {
@@ -34,15 +32,10 @@ class StudentController extends Controller
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("-m-d");
         
-        $student = Student::select("students.id","dni","name","lastName","birthDate","students.year","division")
-        ->join("divisions","divisions.student_idd","=","students.id")->paginate(10);
-        
         $cumpleanios = Student::where("birthDate","LIKE","%".$dia_actual."%")
-        ->select("name","lastName","birthDate")->get();
+        ->select("name","birthDate")->get();
         
-        //dd($student);
-
-        return view("student.studentList",compact("student","cumpleanios"));
+        return view("student.studentList",compact("cumpleanios"));
     }
 
      public function new(){
@@ -117,7 +110,6 @@ class StudentController extends Controller
 
             $student->dni = $request->dni;
             $student->name = $request->name;
-            $student->lastName = $request->lastName;
             $student->birthDate = $request->birthDate;
             $student->year = $request->year;
             $student->division = $request->division;
@@ -159,7 +151,6 @@ class StudentController extends Controller
             
             $students->dni = $request->dni;
             $students->name = $request->name;
-            $students->lastName = $request->lastName;
             $students->birthDate = $request->birthDate;
             $students->year = $request->year;
             $students->division = $request->division;

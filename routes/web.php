@@ -4,6 +4,7 @@ use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Livewire\StudentListComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,6 @@ Route::controller(StudentController::class)->group(function(){
     Route::get("student/find","findStudent")->name("student.find");
 
     Route::get("student/list","list")->name("student.list");
-
-    Route::get("student/filter","filter")->name("student.filter");
 
     Route::get("student/new","new")->name("student.new");
     

@@ -8,7 +8,7 @@
     }
 }
 
-function enviar(){
-    let form = document.getElementById("filter-form");
+/*function EnviarSearch(){
+    let form = document.getElementById("form-input");
     form.submit();
-}
+}*/

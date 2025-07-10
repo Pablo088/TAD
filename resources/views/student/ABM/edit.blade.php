@@ -74,6 +74,6 @@
     </div>
     
     @section("content_footer")
-        <a href="{{route('student.menu')}}"><button class="btn btn-secondary">Volver</button></a>
+        <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
     @stop
 @endsection    
