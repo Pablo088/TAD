@@ -1,7 +1,7 @@
 <div>
     <div id="filters-container">
         <div class="filter-field">
-            <input type="search" name="input-filter" id="input-filter" wire:model.live="search" class="form-control" placeholder="Buscar por nombre y apellido">
+            <input type="search" name="input-filter" id="input-filter" wire:model.live="search" class="form-control" placeholder="Buscar por nombre o DNI">
         </div>        
 
         <div class="filter-field">
@@ -22,6 +22,15 @@
                 <option value="A">A</option>
                 <option value="B">B</option>
             </select>
+        </div>
+        
+        <div class="filter-field">
+            <select name="career-filter" id="career-filter" wire:model.live="careerFilter" class="form-control text-center">
+                <option value="">Filtro por Carrera</option>
+                @foreach($careers as $career)
+                    <option value="{{$career->career}}">{{$career->career}}</option>
+                @endforeach
+            </select>
         </div>    
     </div>
 
@@ -38,29 +47,33 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($student as $students)
-                <tr class="table-success">
-                    <td class="text-end">{{$students->dni}}</td>
-                    <td class="text-center">{{$students->name}}</td>
-                    <td class="text-center">{{$students->birthDate}}</td>
-                    <td class="text-center">{{$students->year}}</td>
-                    <td class="text-center">{{$students->division}}</td>
-                    <td class="text-center">{{$students->career}}</td>
-                    <td class="text-center" style="display: grid;">
-                        <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
-                        
-                        <a href="{{route('student.info',$students->id)}}"><button class="btn btn-info my-1">Condicion General</button></a>
-                        
-                        <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning my-1">Agregar Nota</button></a>
-                        
-                        <form action="{{route('student.destroy',$students->id)}}" method="post">
-                            @csrf  
-                            @method("delete")
-                            <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn" value="{{$students->id}}">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+            @if($student !== null)
+                @foreach($student as $students)
+                    <tr class="table-success">
+                        <td class="text-end">{{$students->dni}}</td>
+                        <td class="text-center">{{$students->name}}</td>
+                        <td class="text-center">{{$students->birthDate}}</td>
+                        <td class="text-center">{{$students->year}}</td>
+                        <td class="text-center">{{$students->division}}</td>
+                        <td class="text-center">{{$students->career}}</td>
+                        <td class="text-center" style="display: grid;">
+                            <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
+
+                            <a href="{{route('student.info',$students->id)}}"><button class="btn btn-info my-1">Condicion General</button></a>
+
+                            <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning my-1">Agregar Nota</button></a>
+
+                            <form action="{{route('student.destroy',$students->id)}}" method="post">
+                                @csrf  
+                                @method("delete")
+                                <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn" value="{{$students->id}}">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <div>No hay resultados para mostrar</div>
+            @endif
         </tbody>
     </table>
 </div>
