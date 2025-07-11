@@ -33,22 +33,22 @@
         <form action="{{route('student.update',$student)}}" method="post" id="the-form">
             @csrf
             @method("put")
+
             <div class="input-container">
                 <label for="dni">DNI</label>
-                <input type="number" name="dni" id="dni" class="form-control" value='{{$student->dni}}'>
+                <input type="number" name="dni" id="dni" class="form-control" value='{{$student->dni}}' max="9">
             </div>
+
             <div class="input-container">
-                <label for="name">Nombre</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{$student->name}}">
+                <label for="name">Nombre Completo</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{$student->name}}" maxlength="50">
             </div>
-            <div class="input-container">
-                <label for="lastName">Apellido</label>
-                <input type="text" name="lastName" id="lastName" class="form-control" value="{{$student->lastName}}">
-            </div>
+
             <div class="input-container">
                 <label for="birthDate">Fecha de Nacimiento</label>
                 <input type="date" name="birthDate" id="birthDate" class="form-control" value="{{$student->birthDate}}">
             </div>
+
             <div class="input-container">
                 <label for="year">Año</label>
                 <select type="text" name="year" id="year" value="{{old('year')}}" class="form-control">
@@ -60,6 +60,7 @@
                     <option>6</option>
                 </select>
             </div>
+
             <div class="input-container">
                 <label for="division">Division</label>
                 <select type="text" name="division" id="division" value="{{old('group')}}" class="form-control">
@@ -67,6 +68,7 @@
                     <option>B</option>
                 </select>
             </div>
+
             <div class="input-container">
                 <button type="submit" class="btn btn-primary">Actualizar</button>
             </div>

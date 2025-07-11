@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Db;
 
 class PdfController extends Controller
 {
-    public function pdf(){
-        $student = Student::All();
-        $pdf = Pdf::loadView('student.list', compact("student"));
-        return $pdf->stream('list.pdf');
-    }
     public function reportFilter(){
         $student = Student::select("dni","name","lastName","birthDate","division","prom",Db::raw("count(assists.created_at) as assist"))
                         ->groupBy("students.id","notas.student_idn","prom")                

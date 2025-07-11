@@ -33,8 +33,8 @@
 
     #back-messages{
         margin-top: 10px;
-        padding-right: 20px;
-        padding-left: 20px;
+        padding: 20px;
+        border-radius: 5px;
     }
 
     #content-main{
@@ -55,12 +55,12 @@
             <header id="content-header">
                 @yield("content_header")
             </header>
-
-            <div id="back-messages">
-                @yield("content-messages")
-            </div>
             
             <div id="content-main">
+                <div id="back-messages">
+                    @yield("content_messages")
+                </div>
+
                 @yield('content')
             </div>
 

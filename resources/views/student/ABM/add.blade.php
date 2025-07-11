@@ -24,13 +24,8 @@
         </div>
 
         <div class="campo-container">
-            <label for="name">Nombre</label>
+            <label for="name">Nombre Completo</label>
             <input type="text" name="name" id="name" class="form-control" placeholder="Nombre" value="{{old('name')}}">
-        </div>
-
-        <div class="campo-container">
-            <label for="lastName">Apellido</label>
-            <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Apellido" value="{{old('lastName')}}">
         </div>
 
         <div class="campo-container">

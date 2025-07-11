@@ -17,15 +17,12 @@ use App\Livewire\StudentListComponent;
 |
 */
 
-/*
-Route::get('/', function () {
-    return view('welcome');
-});*/
-
 Route::get("/info",[LoggingController::class,"info"])->middleware("verificar.rol")->name("info");
 
 Route::controller(StudentController::class)->group(function(){
-    Route::get("/","studentIndex")->name("student.index");
+    Route::get("/",function(){
+        return view("studentIndex");
+    })->name("student.index");
 
     Route::get("student/find","findStudent")->name("student.find");
 
@@ -43,7 +40,7 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::post("student/addAssist","addAssist")->name("student.addAssist");
 
-    Route::get("student/{id}/nota","notas")->name("student.notas");//->middleware("verificar.rol")
+    Route::get("student/{id}/nota","notas")->name("student.notas");
     
     Route::get("student/settings","settings")->name("student.settings");
 
@@ -55,7 +52,5 @@ Route::controller(StudentController::class)->group(function(){
 });
 
 Route::controller(PdfController::class)->group(function(){
-    Route::get("pdf/list","pdf")->name("list.pdf");
-
     Route::get("pdf/report/filter","reportFilter")->name("report.pdf");
 });

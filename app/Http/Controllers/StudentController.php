@@ -24,10 +24,6 @@ use Exception;
 
 class StudentController extends Controller
 {
-    public function studentIndex(){
-        return view("studentIndex");
-    }
-
     public function list(){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $dia_actual = Carbon::now()->format("-m-d");
@@ -65,7 +61,7 @@ class StudentController extends Controller
 
     public function settings(Setting $settings){
         $settings = Setting::first();
-        //dd($settings);
+
         return view("settings",compact("settings"));
     }   
  
@@ -90,12 +86,11 @@ class StudentController extends Controller
         }
 
         $request->validate([
-            "dni"=> ["required","int"],
-            "name"=> ["required","string"],
-            "lastName"=> ["required","string"],
+            "dni"=> ["required","numeric"],
+            "name"=> ["required","string","min|6","max|50"],
             "birthDate"=> ["required","date"],
-            "year"=> ["required","string"],
-            "division"=> ["required","string"]
+            "year"=> ["required","numeric"],
+            "division"=> ["required","string","max|8"]
         ]);
 
         //bloque para validar si el alumno ya existe
@@ -139,7 +134,6 @@ class StudentController extends Controller
         $request->validate([
             "dni" => ["required","int"],
             "name" => ["required","string"],
-            "lastName" => ["required","string"],
             "birthDate" => ["required","date"],
             "year" => ["required","string"],
             "division" => ["required","string"]
