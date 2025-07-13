@@ -8,13 +8,11 @@ use App\Models\Student;
 
 use Illuminate\Support\Str;
 
-use App\Models\Logging;
-
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Assist;
+use App\Models\StudentAssist;
 
-use App\Models\Nota;
+use App\Models\StudentCareer;
 
 use Carbon\Carbon;
 
@@ -48,13 +46,13 @@ class StudentController extends Controller
     }
 
     public function info($id){
-        $studentAssist = Assist::where("student_ida",$id)->count();
+        $studentAssist = StudentAssist::where("student_ida",$id)->count();
 
         $diasClases = Setting::select("dias_clases")->first();
 
         $assistPercentage = round(($studentAssist * 100) / $diasClases->dias_clases);
 
-        $student_assist = Assist::select("created_at")->where("student_ida",$id)->get();
+        $student_assist = StudentAssist::select("created_at")->where("student_ida",$id)->get();
        
         return view("student.studentInfo",compact("assistPercentage","student_assist"));
     }      
@@ -74,17 +72,6 @@ class StudentController extends Controller
     }
 
     public function add(Request $request){
-        $log = new Logging();
-        $idUsuario =  Auth::user()->id??null;
-
-        if($idUsuario !== null){
-            $log->user_id = $idUsuario;
-            $log->user_nav = $request->header('user-agent');
-            $log->user_ip = $request->ip('user-agent');
-            $log->user_action = "alta";
-            $log->save();
-        }
-
         $request->validate([
             "dni"=> ["required","numeric"],
             "name"=> ["required","string","min|6","max|50"],
@@ -120,17 +107,6 @@ class StudentController extends Controller
     }
     
     public function update(Request $request,$student){
-        $log = new Logging();
-        $idUsuario = Auth::user()->id??null;
-
-        if($idUsuario !== null){
-            $log->user_id = Auth::user()->id;
-            $log->user_nav = $request->header('user-agent');
-            $log->user_ip = $request->ip('user-agent');
-            $log->user_action = "modificacion";
-            $log->save();
-        }
-
         $request->validate([
             "dni" => ["required","int"],
             "name" => ["required","string"],
@@ -160,17 +136,6 @@ class StudentController extends Controller
     }
 
     public function destroy(Request $request,$id){
-        $log = new Logging();
-        $idUsuario =  Auth::user()->id??null;
-
-        if($idUsuario !== null){
-            $log->user_id = Auth::user()->id;
-            $log->user_nav = $request->header('user-agent');
-            $log->user_ip = $request->ip('user-agent');
-            $log->user_action = "baja";
-            $log->save();
-        } 
-
         try{
             $student = Student::find($id);
             $student->delete();
@@ -185,9 +150,9 @@ class StudentController extends Controller
     
     public function addAssist(Request $request){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
-        $assist = new Assist();
+        $assist = new StudentAssist();
         $dia_actual = Carbon::now()->format("Y-m-d");
-        $comparacion = Assist::where("student_ida",$request->id)->max("created_at");
+        $comparacion = StudentAssist::where("student_ida",$request->id)->max("created_at");
         $dia_asistencia = Str::substr($comparacion,0,-9);
 
         if($dia_actual !== $dia_asistencia){
@@ -216,7 +181,7 @@ class StudentController extends Controller
         ]);
         
         try{
-            $notas = new Nota();
+            $notas = new StudentCareer();
             $notas->student_idn = $request->id;
             $notas->nota1 = $request->nota1;
             $notas->nota2 = $request->nota2;
