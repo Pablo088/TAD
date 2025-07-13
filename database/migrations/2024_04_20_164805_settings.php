@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create("settings",function(Blueprint $table){
             $table->id();
-            $table->integer("dias_clases");
-            $table->integer("promedio_promocion");
-            $table->integer("promedio_regularidad");
-            $table->integer("edad_minima");
+            $table->integer("dias_clases",unsigned:true);
+            $table->integer("promedio_promocion",unsigned:true);
+            $table->integer("promedio_regularidad",unsigned:true);
+            $table->integer("edad_minima",unsigned:true);
             $table->timestamps();
         });
     }

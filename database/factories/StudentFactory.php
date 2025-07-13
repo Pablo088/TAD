@@ -19,10 +19,7 @@ class StudentFactory extends Factory
         return [
             "dni"=>fake()->randomNumber($nbDigits=8,$strict=true),
             "name"=>fake()->firstName()." ".fake()->lastName(),
-            "birthDate"=>fake()->date(),
-            "year"=> fake()->randomElement([1,2,3,4,5,6]),
-            "division"=>fake()->randomElement(["A","B"]),
-            "career"=>fake()->jobTitle()
+            "birthDate"=>fake()->date()
         ];
     }
 }

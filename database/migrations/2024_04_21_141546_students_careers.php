@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("notes", function(Blueprint $table){
+        Schema::create("students_careers", function(Blueprint $table){
             $table->id();
-            $table->foreignId("student_idn")->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
-            $table->foreignId("career_idn")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
+            $table->foreignId("student_idc")->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
+            $table->foreignId("career_idc")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
+            $table->integer("current_year",unsigned:true);
+            $table->string("division",length:1);
             $table->json("notes")->nullable();
             $table->integer("notes_avg",unsigned:true)->nullable();
             $table->timestamps();
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("notes");
+        Schema::dropIfExists("students_careers");
     }
 };

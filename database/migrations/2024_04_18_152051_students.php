@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->integer("dni");
-            $table->string("name");
+            $table->integer("dni",unsigned:true);
+            $table->string("name",length:64);
             $table->date("birthDate");
-            $table->enum("year",[1,2,3,4,5,6,7,8,9]);
-            $table->enum("division",["A","B"]);
-            $table->string("career");
             $table->timestamps();
         });
     }

@@ -3,12 +3,11 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Student;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Assist>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Career>
  */
-class AssistFactory extends Factory
+class CareerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +16,9 @@ class AssistFactory extends Factory
      */
     public function definition(): array
     {
-        $student = Student::max("id");
-
         return [
-            "student_ida" => fake()->numberBetween($min=1,$max=$student)
+            "name"=>fake()->jobTitle(),
+            "total_years"=>fake()->numberBetween(int1:3,int2:9)
         ];
     }
 }

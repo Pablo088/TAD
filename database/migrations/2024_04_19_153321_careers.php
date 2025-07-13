@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create("careers", function(Blueprint $table){
             $table->id();
-            $table->foreignId("student_id")->references("id")->on("students");
+            $table->string("name",length:64);
+            $table->integer("total_years",unsigned:true);
+            $table->timestamps();
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists("careers");
     }
 };

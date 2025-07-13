@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Student;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\StudentAssist>
  */
-class DivisionFactory extends Factory
+class StudentAssistFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,12 +17,10 @@ class DivisionFactory extends Factory
      */
     public function definition(): array
     {
-
         $student = Student::max("id");
-        
+
         return [
-            "student_idd" => fake()->unique()->numberBetween($min= 1,$max= $student),
-            "year"=>fake()->numberBetween($min=1,$max=6)
+            "student_ida" => fake()->numberBetween($min=1,$max=$student)
         ];
     }
 }

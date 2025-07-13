@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("divisions", function(Blueprint $table){
+        Schema::create('student_assists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_idd')->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
-            $table->enum("year",[1,2,3,4,5,6]);
+            $table->foreignId('student_ida')->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("divisions");
+        Schema::dropIfExists('student_assists');
     }
 };
