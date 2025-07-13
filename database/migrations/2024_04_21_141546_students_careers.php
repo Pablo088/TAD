@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create("students_careers", function(Blueprint $table){
             $table->id();
-            $table->foreignId("student_idc")->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
+            $table->foreignId("student_idc")->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade")->unique();
             $table->foreignId("career_idc")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
             $table->integer("current_year",unsigned:true);
             $table->string("division",length:1);

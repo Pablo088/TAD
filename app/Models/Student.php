@@ -10,10 +10,10 @@ class Student extends Model
     use HasFactory;
 
     public function StudentAssists(){
-        return $this->hasMany(StudentAssist::class,"student_ida");
+        return $this->hasMany(StudentAssist::class,"student_ida",'id');
     }
     
     public function StudentCareer(){
-        return $this->hasOne(StudentCareer::class,"student_idc");
+        return $this->hasOne(StudentCareer::class,"student_idc",'id');
     }
 }

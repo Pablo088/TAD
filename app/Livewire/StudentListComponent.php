@@ -2,8 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Career;
 use Livewire\Component;
-use App\Models\Student;
+use App\Models\StudentCareer;
 
 class StudentListComponent extends Component
 {
@@ -14,18 +15,19 @@ class StudentListComponent extends Component
 
     public function render()
     {   
-        $careers = Student::select("career")->get();
+        $careers = Career::select("name")->get();
 
-        $student = Student::select("students.id","dni","name","birthDate","students.year","division","career")
-        ->join("divisions","divisions.student_idd","=","students.id");
+        $student = StudentCareer::select("students.id","dni","students.name AS student_name","birthDate","careers.name AS career_name","division","current_year")
+        ->join("students","students_careers.student_idc","=","students.id")
+        ->join("careers","students_careers.career_idc","=","careers.id");
         
         if($this->search){
-            $student->where("name","LIKE","%$this->search%");
+            $student->where("students.name","LIKE","%$this->search%");
             $student->orWhere("dni","LIKE","%$this->search%");
         }
 
         if($this->yearFilter){
-            $student->where("students.year",$this->yearFilter);
+            $student->where("current_year",$this->yearFilter);
         }
 
         if($this->divisionFilter){
@@ -33,7 +35,7 @@ class StudentListComponent extends Component
         }
 
          if($this->careerFilter){
-            $student->where("career",$this->careerFilter);
+            $student->where("careers.name",$this->careerFilter);
         }
         
         $student = $student->paginate(10);

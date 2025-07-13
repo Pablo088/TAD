@@ -23,7 +23,7 @@
     @foreach($cumpleanios as $cumple)   
         @if($cumple)
             <div class="alert alert-success text-center">
-                ¡Muy feliz cumpleaños {{$cumple->name}} {{$cumple->lastName}}!
+                ¡Muy feliz cumpleaños, {{$cumple->name}} {{$cumple->lastName}}!
             </div>
         @endif    
     @endforeach

@@ -28,7 +28,7 @@
             <select name="career-filter" id="career-filter" wire:model.live="careerFilter" class="form-control text-center">
                 <option value="">Filtro por Carrera</option>
                 @foreach($careers as $career)
-                    <option value="{{$career->career}}">{{$career->career}}</option>
+                    <option value="{{$career->career}}">{{$career->name}}</option>
                 @endforeach
             </select>
         </div>    
@@ -51,11 +51,11 @@
                 @foreach($student as $students)
                     <tr class="table-success">
                         <td class="text-end">{{$students->dni}}</td>
-                        <td class="text-center">{{$students->name}}</td>
+                        <td class="text-center">{{$students->student_name}}</td>
                         <td class="text-center">{{$students->birthDate}}</td>
-                        <td class="text-center">{{$students->year}}</td>
+                        <td class="text-center">{{$students->current_year}}</td>
                         <td class="text-center">{{$students->division}}</td>
-                        <td class="text-center">{{$students->career}}</td>
+                        <td class="text-center">{{$students->career_name}}</td>
                         <td class="text-center" style="display: grid;">
                             <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
 

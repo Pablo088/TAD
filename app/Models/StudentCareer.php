@@ -12,9 +12,9 @@ class StudentCareer extends Model
     protected $table = "students_careers";
 
     public function student(){
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class,'student_idc','id');
     }
     public function career(){
-        return $this->belongsTo(Career::class);
+        return $this->belongsTo(Career::class,'career_idc','id');
     }
 }
