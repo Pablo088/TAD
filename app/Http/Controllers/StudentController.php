@@ -77,7 +77,7 @@ class StudentController extends Controller
     public function add(Request $request){
         $request->validate([
             "dni"=> ["required","numeric"],
-            "name"=> ["required","string","min|6","max|50"],
+            "name"=> ["required","string","min|8","max|64"],
             "birthDate"=> ["required","date"],
             "year"=> ["required","numeric"],
             "division"=> ["required","string","max|8"]
@@ -105,6 +105,19 @@ class StudentController extends Controller
             unset($student);
             return redirect()->back()->with("error","Ocurrio un error al intentar dar de alta al alumno. ",$e);
         }    
+
+        try{
+            $student_career = new StudentCareer();
+            
+            $student_career->current_year = $request->year;
+            $student_career->division = $request->division;
+
+            $student_career->save();
+            unset($student_career);
+        } catch (Exception $e){
+            unset($student_career);
+            return redirect()->back()->with("error2","Ocurrio un error al intentar dar de alta al alumno. ",$e);
+        }
 
         return redirect()->back()->with("success","¡El alumno fue dado de alta!");
     }

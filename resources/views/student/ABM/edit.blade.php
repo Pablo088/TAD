@@ -41,7 +41,7 @@
 
             <div class="input-container">
                 <label for="name">Nombre Completo</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{$student->name}}" maxlength="50">
+                <input type="text" name="name" id="name" class="form-control" value="{{$student->name}}" maxlength="64">
             </div>
 
             <div class="input-container">
