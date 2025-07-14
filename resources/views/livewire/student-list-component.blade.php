@@ -28,7 +28,7 @@
             <select name="career-filter" id="career-filter" wire:model.live="careerFilter" class="form-control text-center">
                 <option value="">Filtro por Carrera</option>
                 @foreach($careers as $career)
-                    <option value="{{$career->career}}">{{$career->name}}</option>
+                    <option value="{{$career->name}}">{{$career->name}}</option>
                 @endforeach
             </select>
         </div>    
@@ -56,7 +56,7 @@
                         <td class="text-center">{{$students->current_year}}</td>
                         <td class="text-center">{{$students->division}}</td>
                         <td class="text-center">{{$students->career_name}}</td>
-                        <td class="text-center" style="display: grid;">
+                        <td class="text-end">
                             <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
 
                             <a href="{{route('student.info',$students->id)}}"><button class="btn btn-info my-1">Condicion General</button></a>
@@ -76,11 +76,10 @@
             @endif
         </tbody>
     </table>
+    @section("content_footer")
+        <div style="display: flex;justify-content: space-between;">
+            Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
+            {{$student->links("pagination::bootstrap-4")}}
+        </div>
+    @stop
 </div>
-
-@section("content_footer")
-    <div style="display: flex;justify-content: space-between;">
-        Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
-        {{$student->links("pagination::bootstrap-4")}}
-    </div>
-@stop

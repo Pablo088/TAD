@@ -21,26 +21,32 @@
         @endswitch
     </div>
     
-     <div>
+    <div>
         <h3>Listado total de asistencias del alumno</h3>
-        
-        <table>
+        <table class="table table-primary table-bordered table-hover table-responsive-sm">
             <thead>
                 <tr>
-                    <th>Fechas de Asistencia</th>
+                    <th class="text-center">Asistencias</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($student_assist as $assist)
-                    <tr>
-                        <td>{{$assist->created_at}}</td>
-                    </tr>
-                @endforeach
+                @if($student !== null)
+                    @foreach($student as $students)
+                        <tr class="table-success">
+                            <td class="text-center">{{$students->created_at}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <div>No hay resultados para mostrar</div>
+                @endif
             </tbody>
         </table>
+        <div style="display: flex;justify-content: space-between;">
+                Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
+                {{$student->links("pagination::bootstrap-4")}}
+        </div>
     </div>
 @stop
-
 @section("content_footer")
     <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
 @stop

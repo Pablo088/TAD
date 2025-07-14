@@ -5,9 +5,13 @@ namespace App\Livewire;
 use App\Models\Career;
 use Livewire\Component;
 use App\Models\StudentCareer;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 class StudentListComponent extends Component
 {
+    use WithPagination, WithoutUrlPagination;
+
     public $search;
     public $yearFilter;
     public $divisionFilter;
@@ -22,7 +26,8 @@ class StudentListComponent extends Component
         ->join("careers","students_careers.career_idc","=","careers.id");
         
         if($this->search){
-            $student->where("students.name","LIKE","%$this->search%");
+            $student->where("students.name","LIKE","%$this->search%")->get();
+            dd($student);
             $student->orWhere("dni","LIKE","%$this->search%");
         }
 
@@ -37,7 +42,7 @@ class StudentListComponent extends Component
          if($this->careerFilter){
             $student->where("careers.name",$this->careerFilter);
         }
-        
+
         $student = $student->paginate(10);
 
         return view('livewire.student-list-component',compact("student","careers"));

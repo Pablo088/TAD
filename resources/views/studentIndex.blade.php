@@ -9,6 +9,7 @@
     <form class="d-flex justify-content-center" action="{{route('student.find')}}" method="get">
         <input class="form-control-lg text-center my-3" type="number" name="dni" placeholder="DNI Alumno">
     </form>
+    
     @if (session("error"))
         <div class="alert alert-error text-center">{{session("error")}}</div>
     @endif
@@ -17,4 +18,4 @@
         <div class="alert alert-error text-center">{{session("error2")}}</div>
     @endif
     
-    @endsection
+@endsection

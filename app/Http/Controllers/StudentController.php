@@ -52,9 +52,12 @@ class StudentController extends Controller
 
         $assistPercentage = round(($studentAssist * 100) / $diasClases->dias_clases);
 
-        $student_assist = StudentAssist::select("created_at")->where("student_ida",$id)->get();
+        $student = StudentAssist::select("student_assists.created_at","name")
+        ->join("students","students.id","=","student_assists.student_ida")
+        ->where("student_ida",$id)
+        ->paginate(10);
        
-        return view("student.studentInfo",compact("assistPercentage","student_assist"));
+        return view("student.studentInfo",compact("assistPercentage","student"));
     }      
 
     public function settings(Setting $settings){
