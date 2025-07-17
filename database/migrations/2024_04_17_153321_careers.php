@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create("careers", function(Blueprint $table){
             $table->id();
-            $table->foreignId("career_id")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
-            $table->unsignedInteger("dni");
             $table->string("name",length:64);
-            $table->date("birthDate");
-            $table->unsignedSmallInteger("current_year");
-            $table->string("division",length:1);
+            $table->unsignedSmallInteger("total_years");
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists("careers");
     }
 };

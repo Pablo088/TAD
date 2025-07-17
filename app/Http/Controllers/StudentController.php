@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Career;
+
 use Illuminate\Http\Request;
 
 use App\Models\Student;
 
 use Illuminate\Support\Str;
 
-use Illuminate\Support\Facades\Auth;
-
 use App\Models\StudentAssist;
-
-use App\Models\StudentCareer;
 
 use Carbon\Carbon;
 
@@ -32,17 +30,15 @@ class StudentController extends Controller
         return view("student.studentList",compact("cumpleanios"));
     }
 
-     public function new(){
-        return view("student.ABM.add");
-    }
-
-    public function edit($id){
-        $student = Student::find($id);
-        return view("student.ABM.edit", compact("student"));
-    }
-
-    public function notas($id){
-        return view("student.notas",compact("id"));
+    public function edit($student){
+        $students = Student::select("students.id AS student_id","career_id","students.id AS student_id","dni","birthDate","students.name AS student_name","division","current_year","careers.name AS career_name")
+        ->join("careers","careers.id","=","students.career_id")
+        ->where("students.id",$student)
+        ->get()->toArray();
+        
+        $careers = Career::select("id","name")->where("name","!=",$students[0]["career_name"])->get();
+        
+        return view("student.ABM.edit", compact("students","careers"));
     }
 
     public function info($id){
@@ -58,13 +54,7 @@ class StudentController extends Controller
         ->paginate(10);
        
         return view("student.studentInfo",compact("assistPercentage","student"));
-    }      
-
-    public function settings(Setting $settings){
-        $settings = Setting::first();
-
-        return view("settings",compact("settings"));
-    }   
+    }         
  
     public function filter(Request $request){
 
@@ -75,83 +65,68 @@ class StudentController extends Controller
     }
 
     public function add(Request $request){
+        $maxCareerYears = (Career::select("total_years")
+        ->join("students","careers.id","=","students.career_id")
+        ->where("students.id")
+        ->get()->toArray())[0]["total_years"];
+
         $request->validate([
-            "dni"=> ["required","numeric"],
-            "name"=> ["required","string","min|8","max|64"],
-            "birthDate"=> ["required","date"],
-            "year"=> ["required","numeric"],
-            "division"=> ["required","string","max|8"]
+            "dni" => ["required","numeric","digits:8"],
+            "name" => ["required","string","digits_between:6,64"],
+            "birthDate" => ["required","date"],
+            "career" => ["required","string",'career_exists'],
+            "current_year" => ["required","numeric","digits:1","valid_career_year:$maxCareerYears"],
+            "division" => ["required","string","digits:1"]
         ]);
 
-        //bloque para validar si el alumno ya existe
-        $studentExist = Student::where("dni",$request->dni)->get();
-
-        if($studentExist !== null){
-            return redirect()->back()->with("error","Ya existe un alumno con este dni");
-        }
-    
-        try{
-            $student = new Student();
-
-            $student->dni = $request->dni;
-            $student->name = $request->name;
-            $student->birthDate = $request->birthDate;
-            $student->year = $request->year;
-            $student->division = $request->division;
-
-            $student->save();
-            unset($student);
-        } catch (Exception $e){
-            unset($student);
-            return redirect()->back()->with("error","Ocurrio un error al intentar dar de alta al alumno. ",$e);
-        }    
-
-        try{
-            $student_career = new StudentCareer();
-            
-            $student_career->current_year = $request->year;
-            $student_career->division = $request->division;
-
-            $student_career->save();
-            unset($student_career);
-        } catch (Exception $e){
-            unset($student_career);
-            return redirect()->back()->with("error2","Ocurrio un error al intentar dar de alta al alumno. ",$e);
-        }
+        Student::create([
+            "dni" => $request->validated("dni"),
+            "name" => $request->validated("name"),
+            "birthDate" => $request->validated("birthDate"),
+            "career" => ["required","string","digits_between:8,64"],
+            "current_year" => $request->validated("current_year"),
+            "division" => $request->validated("division")
+        ]);
 
         return redirect()->back()->with("success","¡El alumno fue dado de alta!");
     }
     
     public function update(Request $request,$student){
+        $maxCareerYears = (Career::select("total_years")
+        ->join("students","careers.id","=","students.career_id")
+        ->where("students.id",$student)
+        ->get()->toArray())[0]["total_years"];
+
         $request->validate([
-            "dni" => ["required","int"],
-            "name" => ["required","string"],
+            "dni" => ["required","numeric","digits:8"],
+            "name" => ["required","string","between:6,64"],
             "birthDate" => ["required","date"],
-            "year" => ["required","string"],
-            "division" => ["required","string"]
+            "career" => ["required","string","career_exists"],
+            "current_year" => ["required","numeric","digits:1","valid_career_year:$maxCareerYears"],
+            "division" => ["required","string","size:1"]
         ]);
 
         try{
-            $students = Student::find($student);
-            //dd($request);
+            $student = Student::find($student);
             
-            $students->dni = $request->dni;
-            $students->name = $request->name;
-            $students->birthDate = $request->birthDate;
-            $students->year = $request->year;
-            $students->division = $request->division;
+            $student->dni = $request->dni;
+            $student->name = $request->name;
+            $student->birthDate = $request->birthDate;
+            $student->career_id = $request->career;
+            $student->current_year = $request->current_year;
+            $student->division = $request->division;
 
-            $students->save();
-            unset($students);
-        } catch(Exception $e){
-            unset($students);
-            return redirect()->route("student.edit")->with("error","Ocurrio un error al intentar actualizar al alumno. ",$e);
+            $student->save();
+            unset($student);
+        }catch(Exception $e){
+            unset($student);
+            return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.".$e);
         }
 
         return redirect()->back()->with("success","¡Se actualizaron los datos del alumno!");
     }
 
-    public function destroy(Request $request,$id){
+    public function destroy($id){
         try{
             $student = Student::find($id);
             $student->delete();
@@ -197,7 +172,7 @@ class StudentController extends Controller
         ]);
         
         try{
-            $notas = new StudentCareer();
+            $notas = new Student();
             $notas->student_idn = $request->id;
             $notas->nota1 = $request->nota1;
             $notas->nota2 = $request->nota2;
@@ -212,55 +187,4 @@ class StudentController extends Controller
 
         return redirect()->back()->with("success","¡Se cargaron las notas del alumno!");
     }           
-
-    public function addSettings(Setting $setting,Request $request){     
-        $settings = Setting::first();
-        
-        if($settings == null){
-            $request -> validate([
-                "dias_clases" => "required",
-                "promedio_promocion" => "required",
-                "promedio_regularidad" => "required",
-                "edad_minima" => "required"
-            ]);
-    
-            try{
-                $settings = new Setting();
-                $settings->dias_clases = $request->dias_clases;
-                $settings->promedio_promocion = $request->promedio_promocion;
-                $settings->promedio_regularidad = $request->promedio_regularidad;
-                $settings->edad_minima = $request->edad_minima;
-                
-                $settings->save();
-            } catch (Exception $e) {
-                unset($settings);
-                return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar cargar la configuración. ".$e);
-            }
-            
-            unset($settings);
-            return redirect()->route("student.settings")->with("success","¡Se cargó la configuración!");
-        }else{
-            $request -> validate([
-                "dias_clases" => "required",
-                "promedio_promocion" => "required",
-                "promedio_regularidad" => "required",
-                "edad_minima" => "required"
-            ]);
-            
-            try{
-                $settings->dias_clases = $request->dias_clases;
-                $settings->promedio_promocion = $request->promedio_promocion;
-                $settings->promedio_regularidad = $request->promedio_regularidad;
-                $settings->edad_minima = $request->edad_minima;
-                
-                $settings->save();
-            } catch (Exception $e) {
-                unset($settings);
-                return redirect()->route("student.settings")->with("error","Ocurrió un error al intentar actualizar la configuración. ".$e);
-            }
-            
-            unset($settings);
-            return redirect()->route("student.settings")->with("success","¡Se actualizó la configuración!");
-        }
-    }        
 }

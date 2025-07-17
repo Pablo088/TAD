@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\LoggingController;
 use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
-use App\Livewire\StudentListComponent;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +16,6 @@ use App\Livewire\StudentListComponent;
 |
 */
 
-Route::get("/info",[LoggingController::class,"info"])->middleware("verificar.rol")->name("info");
-
 Route::controller(StudentController::class)->group(function(){
     Route::get("/",function(){
         return view("studentIndex");
@@ -28,27 +25,33 @@ Route::controller(StudentController::class)->group(function(){
 
     Route::get("student/list","list")->name("student.list");
 
-    Route::get("student/new","new")->name("student.new");
+    Route::get("student/new",function(){
+        return view("student.ABM.add");
+    })->name("student.new");
     
     Route::post("student/new/add","add")->name("student.add");
     
-    Route::get("student/{id}/edit","edit")->name("student.edit");
+    Route::get("student/edit/{id}","edit")->name("student.edit");
     
-    Route::put("student/{id}","update")->name("student.update");
+    Route::put("student/edit/update/{id}","update")->name("student.update");
     
-    Route::delete("student/{id}","destroy")->name("student.destroy");
+    Route::delete("student/destroy/{id}","destroy")->name("student.destroy");
 
     Route::post("student/addAssist","addAssist")->name("student.addAssist");
 
-    Route::get("student/{id}/nota","notas")->name("student.notas");
-    
-    Route::get("student/settings","settings")->name("student.settings");
+    Route::get("student/{id}/nota",function($id){
+        return view("student.notas",compact("id"));
+    })->name("student.notas");
 
-    Route::put("student/settings/add","addSettings")->name("student.addSettings");
-
-    Route::post("student/notas","subirNotas")->name("subirNotas");
+    Route::post("student/nota/subir","subirNotas")->name("subirNotas");
 
     Route::get("student/info/{id}","info")->name("student.info");
+});
+
+Route::controller(SettingController::class)->group(function(){
+    Route::get("student/settings","settings")->name("student.settings");
+       
+    Route::put("student/settings/add","addSettings")->name("student.addSettings");
 });
 
 Route::controller(PdfController::class)->group(function(){

@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Career;
 use Livewire\Component;
-use App\Models\StudentCareer;
+use App\Models\Student;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
@@ -21,13 +21,11 @@ class StudentListComponent extends Component
     {   
         $careers = Career::select("name")->get();
 
-        $student = StudentCareer::select("students.id","dni","students.name AS student_name","birthDate","careers.name AS career_name","division","current_year")
-        ->join("students","students_careers.student_idc","=","students.id")
-        ->join("careers","students_careers.career_idc","=","careers.id");
+        $student = Student::select("students.id","dni","students.name AS student_name","birthDate","careers.name AS career_name","division","current_year")
+        ->join("careers","students.career_id","=","careers.id");
         
         if($this->search){
             $student->where("students.name","LIKE","%$this->search%")->get();
-            dd($student);
             $student->orWhere("dni","LIKE","%$this->search%");
         }
 

@@ -56,12 +56,12 @@
                         <td class="text-center">{{$students->current_year}}</td>
                         <td class="text-center">{{$students->division}}</td>
                         <td class="text-center">{{$students->career_name}}</td>
-                        <td class="text-end">
+                        <td class="text-center">
                             <a href="{{route('student.edit',$students->id)}}"><button class="btn btn-warning my-1">Modificar</button></a>
 
-                            <a href="{{route('student.info',$students->id)}}"><button class="btn btn-info my-1">Condicion General</button></a>
-
                             <a href="{{route('student.notas',$students->id)}}"><button class="btn btn-warning my-1">Agregar Nota</button></a>
+                            
+                            <a href="{{route('student.info',$students->id)}}"><button class="btn btn-info my-1">Condicion General</button></a>
 
                             <form action="{{route('student.destroy',$students->id)}}" method="post">
                                 @csrf  
