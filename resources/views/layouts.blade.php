@@ -12,20 +12,21 @@
 <style>
     #content-wrapper{
         background-color: bisque;
-        padding: 20px;
+        padding: 5px;
         margin: 20px;
         border-radius: 20px;
     }
 
     #content-header{
-        background-color: rgb(251, 212, 164);
+        background-color: rgba(242, 190, 126, 1);
         padding: 10px;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px; 
+        margin-bottom: 20px;
     }
 
     #content-footer{
-        background-color: rgb(251, 212, 164);
+        background-color: rgba(218, 175, 121, 1);
         padding: 10px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -35,13 +36,17 @@
         border-radius: 5px;
     }
 
-    #content-main{
+    #content-general{
         display: flex;
         flex-direction: column;
         padding: 20px;
         margin: 20px;
-        border-radius: 5px;
+        border-radius: 15px;
         background-color: rgb(251, 212, 164);
+    }
+
+    #content-main{
+        padding: 20px;
     }
 </style>
 <body style="background-image: url('/imgs/tad-icon.png'); background-size: contain;">   
@@ -50,21 +55,18 @@
     
     <div class="container">
         <div id="content-wrapper">
-            <header id="content-header">
-                @yield("content_header")
-            </header>
-            
-            <div id="content-main">
+            <div id="content-general">
+                <header id="content-header">
+                    @yield("content_header")
+                </header>
+
                 <div id="back-messages">
                     @yield("content_messages")
                 </div>
-
-                @yield('content')
+                <div id="content-main">
+                    @yield('content')
+                </div>
             </div>
-
-            <footer id="content-footer">
-                @yield("content_footer")
-            </footer>
         </div>
 
         <footer class="text-center">

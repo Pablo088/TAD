@@ -92,6 +92,6 @@
     </form>
 @stop
 
-@section("content_footer")
+<footer>
     <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
-@stop
+</footer>

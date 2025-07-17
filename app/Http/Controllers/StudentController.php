@@ -66,8 +66,7 @@ class StudentController extends Controller
 
     public function add(Request $request){
         $maxCareerYears = (Career::select("total_years")
-        ->join("students","careers.id","=","students.career_id")
-        ->where("students.id")
+        ->where("id",$request->career)
         ->get()->toArray())[0]["total_years"];
 
         $request->validate([
@@ -93,7 +92,7 @@ class StudentController extends Controller
             unset($student);
         }catch(Exception $e){
             unset($student);
-            return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.".$e);
+            return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.");
         }
 
         return redirect()->back()->with("success","¡El alumno fue dado de alta!");
@@ -101,8 +100,7 @@ class StudentController extends Controller
     
     public function update(Request $request,$student){
         $maxCareerYears = (Career::select("total_years")
-        ->join("students","careers.id","=","students.career_id")
-        ->where("students.id",$student)
+        ->where("id",$request->career)
         ->get()->toArray())[0]["total_years"];
 
         $request->validate([
@@ -128,7 +126,7 @@ class StudentController extends Controller
             unset($student);
         }catch(Exception $e){
             unset($student);
-            return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.".$e);
+            return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.");
         }
 
         return redirect()->back()->with("success","¡Se actualizaron los datos del alumno!");

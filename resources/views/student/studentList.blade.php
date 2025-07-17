@@ -8,7 +8,7 @@
     <div id="general-actions">
         <div id="general-buttons">
             <a class="mx-1" href="{{route('student.new')}}"><button class="btn btn-outline-primary">Agregar Alumno</button></a>
-            <a class="mx-1" href="{{route('report.pdf')}}"><button class="btn btn-outline-secondary">Reporte</button></a>
+            <a class="mx-1" href="{{route('report.pdf')}}"><button class="btn btn-outline-primary">Reporte</button></a>
         </div>
     </div>
 @stop
