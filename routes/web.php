@@ -4,6 +4,7 @@ use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SettingController;
+use App\Models\Career;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,8 @@ Route::controller(StudentController::class)->group(function(){
     Route::get("student/list","list")->name("student.list");
 
     Route::get("student/new",function(){
-        return view("student.ABM.add");
+        $careers = Career::all();
+        return view("student.ABM.add",compact("careers"));
     })->name("student.new");
     
     Route::post("student/new/add","add")->name("student.add");

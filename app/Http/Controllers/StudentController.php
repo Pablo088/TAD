@@ -72,21 +72,29 @@ class StudentController extends Controller
 
         $request->validate([
             "dni" => ["required","numeric","digits:8"],
-            "name" => ["required","string","digits_between:6,64"],
+            "name" => ["required","string","between:6,64"],
             "birthDate" => ["required","date"],
-            "career" => ["required","string",'career_exists'],
+            "career" => ["required","string","career_exists"],
             "current_year" => ["required","numeric","digits:1","valid_career_year:$maxCareerYears"],
-            "division" => ["required","string","digits:1"]
+            "division" => ["required","string","size:1"]
         ]);
 
-        Student::create([
-            "dni" => $request->validated("dni"),
-            "name" => $request->validated("name"),
-            "birthDate" => $request->validated("birthDate"),
-            "career" => ["required","string","digits_between:8,64"],
-            "current_year" => $request->validated("current_year"),
-            "division" => $request->validated("division")
-        ]);
+         try{
+            $student = new Student();
+            
+            $student->dni = $request->dni;
+            $student->name = $request->name;
+            $student->birthDate = $request->birthDate;
+            $student->career_id = $request->career;
+            $student->current_year = $request->current_year;
+            $student->division = $request->division;
+
+            $student->save();
+            unset($student);
+        }catch(Exception $e){
+            unset($student);
+            return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.".$e);
+        }
 
         return redirect()->back()->with("success","¡El alumno fue dado de alta!");
     }
