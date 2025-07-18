@@ -2,3 +2,15 @@
     display: flex;
     margin-bottom: 15px;
 }
+
+#filters-container{
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.filter-field{
+    width: 25%;
+    height: 25%;
+    border-radius: 10px;
+    margin-right: 15px;
+}

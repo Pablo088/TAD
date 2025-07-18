@@ -1,11 +1,11 @@
 @extends('layouts')
 
 @section("head")
-    @vite("resources/css/student/studentList.css")
+    @vite("resources/css/student/studentIndex.css")
 @stop
 
 @section("content_header")
-    <h1 class="my-3 text-center">Ingresá el DNI para encontrar el alumno</h1>
+    <h1 class="my-3 text-center">Marca las casillas para agregar una asistencia a los alumnos</h1>
 @stop
 
 @section('content')

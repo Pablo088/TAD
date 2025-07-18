@@ -8,20 +8,17 @@
             <select name="career-filter" id="career-filter" wire:model.live="careerFilter" class="form-control text-center">
                 <option value="">Filtro por Carrera</option>
                 @foreach($careers as $career)
-                    <option value="{{$career->name}}">{{$career->name}}</option>
+                    <option value="{{$career->id}}">{{$career->name}}</option>
                 @endforeach
             </select>
         </div>    
 
         <div class="filter-field">
-            <select name="year-filter" id="year-filter" wire:model.live="yearFilter" class="form-control text-center">
+            <select name="year-filter" id="year-filter" wire:model.live="yearFilter"  class="form-control text-center">
                 <option value="">Filtro por Año</option>
-                <option value="1">Primer Año</option>
-                <option value="2">Segundo Año</option>
-                <option value="3">Tercer Año</option>
-                <option value="4">Cuarto Año</option>
-                <option value="5">Quinto Año</option>
-                <option value="6">Sexto Año</option>
+                @foreach($filtersYear as $filter)
+                    <option value="{{$filter->current_year}}">{{$filter->current_year}}</option>
+                @endforeach
             </select>
         </div>
 
@@ -33,41 +30,58 @@
             </select>
         </div>
     </div>
-    
-    <table class="table table-primary table-bordered table-hover table-responsive-sm">
-        <thead>
-            <tr>
-                <th class="text-center">Nombre Completo</th>
-                <th class="text-center">Año</th>
-                <th class="text-center">Division</th>
-                <th class="text-center">Carrera</th>
-                <th class="text-center">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if($student !== null)
+    <div>
+        @if(session("success"))
+            <div class="alert alert-success text-center">{{session("success")}}</div>
+        @endif
+        <table class="table table-primary table-bordered table-hover table-responsive-sm">
+            <thead>
+                <tr>
+                    <th class="text-center">    
+                        <button type="button" wire:click="selectAll" onclick="selectAll()" class="btn btn-outline-primary">Marcar todos</button>
+                    </th>
+                    <th class="text-center">Nombre Completo</th>
+                    <th class="text-center">Carrera</th>
+                    <th class="text-center">Año</th>
+                    <th class="text-center">Division</th>
+                </tr>
+            </thead>
+            <tbody>
                 @foreach($student as $students)
                     <tr class="table-success">
-                        <td class="text-center">{{$students->student_name}}</td>
-                        <td class="text-center">{{$students->current_year}}</td>
-                        <td class="text-center">{{$students->division}}</td>
-                        <td class="text-center">{{$students->career_name}}</td>
-                        <td class="text-center">
-                            <form action="{{route('student.destroy',$students->id)}}" method="post">
-                                @csrf  
-                                <input type="checkbox" name="checkAssist" id="checkAssist" onclick="return confirmar()" class="check check-round" value="{{$students->id}}">Asistencia
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <div>No hay resultados para mostrar</div>
-            @endif
-        </tbody>
-    </table>
-    
-    <footer style="display: flex;justify-content: space-between;">
-        Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
-        {{$student->links("pagination::bootstrap-4")}}
-    </footer>
+                            <td class="text-center">
+                                <form action="#" method="post">
+                                    @csrf  
+                                    <input type="checkbox" name="checkAssist[]" class="check check-round" 
+                                    wire:change="giveAssist({{$students->student_id}})" 
+                                    >
+                                </form>
+                            </td>
+                            <td class="text-center">{{$students->student_name}}</td>
+                            <td class="text-center">{{$students->career_name}}</td>
+                            <td class="text-center">{{$students->current_year}}</td>
+                            <td class="text-center">{{$students->division}}</td>
+                        </tr>
+                    @endforeach
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <button type="button" wire:click="sendAssist" class="btn btn-primary">Enviar</button>
+        </div>
+        
+        <footer style="display: flex;justify-content: space-between;">
+            Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
+            {{$student->links("pagination::bootstrap-4")}}
+        </footer>
+    </div>
+    <script>
+        function selectAll(){
+            let checkboxes = document.querySelectorAll(".check");
+            
+            for(let i = 0; i < checkboxes.length; i++){
+                checkboxes[i].checked = (checkboxes[i].checked == false) ?  true : false;
+            }
+        }
+    </script>
 </div>
