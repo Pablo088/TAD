@@ -34,9 +34,6 @@
         @if(session("success"))
             <div class="alert alert-success text-center">{{session("success")}}</div>
         @endif
-        <div>
-            {{var_dump($studentAssisted)}}
-        </div>
         <table class="table table-primary table-bordered table-hover table-responsive-sm">
             <thead>
                 <tr>
