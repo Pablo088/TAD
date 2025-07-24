@@ -14,9 +14,9 @@ class StudentIndexComponent extends Component
     public $divisionFilter;
     public $careerFilter;
     public $studentAssisted = [];
-    
-    public function render()
-    {
+
+    public function filter(){
+
         $careers = Career::select("id","name")->get();
 
         $student = Student::select("students.id AS student_id","students.name AS student_name","careers.name AS career_name","division","current_year")
@@ -43,34 +43,50 @@ class StudentIndexComponent extends Component
        
         $student = $student->paginate(10);
 
-        foreach($student as $students){
-            array_push($this->studentAssisted,["student_id" => $students->student_id,"checked" => false]);
-        }
+        return [$student,$careers,$filtersYear];
+    }
+
+    public function render(){
+        $filters = $this->filter();
+        $student = $filters[0];
+        $careers = $filters[1];
+        $filtersYear = $filters[2];
 
         //dd($student);
 
         return view('livewire.student-index-component',compact("careers","student",'filtersYear'));
     }
 
-    public function selectAll(){        
-        for($i = 0; $i < count($this->studentAssisted); $i++){
-            ($this->studentAssisted[$i]['checked'] == false) ? $this->studentAssisted[$i]['checked'] = true : $this->studentAssisted[$i]['checked'] = false;
-        }
-        dd($this->studentAssisted);
-    }
-
-    public function giveAssist($value){
-        for($i = 0; $i < count($this->studentAssisted); $i++){
-            if($this->studentAssisted[$i]['student_id'] == $value && $this->studentAssisted[$i]['checked'] == false){
-                $this->studentAssisted[$i]['checked'] = true;
-                break;
-            }else if($this->studentAssisted[$i]['student_id'] == $value && $this->studentAssisted[$i]['checked'] == true){
-                $this->studentAssisted[$i]['checked'] = false;
-                break;
+    public function selectAll(){
+        $student = ($this->filter())[0];
+        
+        if(count($this->studentAssisted) == 0){
+            foreach($student as $students){
+                array_push($this->studentAssisted,["student_id"=>$students->student_id,"checked" => true]);
+            }
+        }else{
+            for($i = 0; $i < count($this->studentAssisted); $i++){     
+                ($this->studentAssisted[$i]["checked"] == false) ? $this->studentAssisted[$i]['checked'] = true : $this->studentAssisted[$i]['checked'] = false;
             }
         }
 
-        dd($this->studentAssisted);
+    }
+
+    public function giveAssist($value){
+        if(count($this->studentAssisted) == 0){
+            $this->studentAssisted += ["student_id"=>$value,"checked" => true];
+        }else{
+            for($i = 0; $i < count($this->studentAssisted); $i++){
+                if($this->studentAssisted[$i]['student_id'] == $value && $this->studentAssisted[$i]['checked'] == false){
+                    $this->studentAssisted[$i]['checked'] = true;
+                    break;
+                }else if($this->studentAssisted[$i]['student_id'] == $value && $this->studentAssisted[$i]['checked'] == true){
+                    $this->studentAssisted[$i]['checked'] = false;
+                    break;
+                }
+            }
+
+        }
     }
 
     public function sendAssist(){            

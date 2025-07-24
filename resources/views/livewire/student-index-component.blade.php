@@ -34,6 +34,9 @@
         @if(session("success"))
             <div class="alert alert-success text-center">{{session("success")}}</div>
         @endif
+        <div>
+            {{var_dump($studentAssisted)}}
+        </div>
         <table class="table table-primary table-bordered table-hover table-responsive-sm">
             <thead>
                 <tr>
@@ -53,7 +56,7 @@
                                 <form action="#" method="post">
                                     @csrf  
                                     <input type="checkbox" name="checkAssist[]" class="check check-round" 
-                                    wire:change="giveAssist({{$students->student_id}})" 
+                                    wire:click="giveAssist({{$students->student_id}})"
                                     >
                                 </form>
                             </td>
