@@ -30,6 +30,10 @@ Route::controller(StudentController::class)->group(function(){
         $careers = Career::all();
         return view("student.ABM.add",compact("careers"));
     })->name("student.new");
+
+     Route::get("student/new/general",function(){
+        return view("student.ABM.createGeneral");
+    })->name("student.create.general");
     
     Route::post("student/new/add","add")->name("student.add");
     

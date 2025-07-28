@@ -5,7 +5,7 @@
 @stop
 
 @section("content_header")
-    <h1>Alta de alumno</h1>
+    <h1 class="text-center">Alta de alumno</h1>
 @stop
 
 @section('content')
@@ -28,12 +28,12 @@
 
         <div class="campo-container">
             <label for="dni">DNI</label>
-            <input type="number" name="dni" id="dni" class="form-control" placeholder="ejemplo: 45000000" value="{{old('dni')}}">
+            <input type="number" name="dni" id="dni" class="form-control" placeholder="ejemplo: 45000000" value="{{old('dni')}}" maxlength="8">
         </div>
 
         <div class="campo-container">
             <label for="name">Nombre Completo</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Ejemplo: Roberto Almada" value="{{old('name')}}">
+            <input type="text" name="name" id="name" class="form-control" placeholder="Ejemplo: Roberto Almada" value="{{old('name')}}" maxlength="64">
             @if($errors->has("birthDate"))
                 @foreach($errors->get("name") as $message)    
                     <li class="text-danger">{{$message}}</li>
@@ -90,8 +90,8 @@
             <button type="submit" class="btn btn-primary">Agregar</button>
         </div>
     </form>
-@stop
 
-<footer>
-    <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
-</footer>
+    <footer>
+        <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
+    </footer>
+@stop

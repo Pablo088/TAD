@@ -6,7 +6,7 @@
 
 @section('content')
     @section("content_header")
-        <h1>Editar Alumno</h1>
+        <h1 class="text-center">Editar Alumno</h1>
     @stop
 
     @section("content_messages")

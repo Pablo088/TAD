@@ -12,12 +12,17 @@
     <form action="{{route('subirNotas')}}" method="post">
         @csrf
         <input type="hidden" name="id" value="{{$id}}" class="form-control">
-        <p>Nota1</p>
-        <input type="number" name="nota1" min="1" max="10" class="form-control">
-        <p>Nota2</p>
-        <input type="number" name="nota2" min="1" max="10" class="form-control">
-        <p>Nota3</p>
-        <input type="number" name="nota3" min="1" max="10" class="form-control">
+       
+        <div class="campo-container">
+            <label for="">Nombre Parcial</label>
+            <input type="text" name="nombreParcial" maxlength="32" class="form-control">
+        </div>
+
+        <div class="campo-container">
+            <label for="">Nota</label>
+            <input type="number" name="nota" min="1" max="10" class="form-control">
+        </div>
+
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 @stop

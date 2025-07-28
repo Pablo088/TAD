@@ -6,7 +6,7 @@
 
 @section('content')
     <div>
-        <h3>Condición del Alumno en Base a sus Asistencias</h3>
+        <h3 class="text-center">Condición del Alumno en Base a sus Asistencias</h3>
 
         @switch($assistPercentage)
             @case ($assistPercentage < 60)
@@ -22,7 +22,7 @@
     </div>
     
     <div>
-        <h3>Listado total de asistencias del alumno</h3>
+        <h3 class="text-center">Listado total de asistencias del alumno</h3>
         <table class="table table-primary table-bordered table-hover table-responsive-sm">
             <thead>
                 <tr>
@@ -46,8 +46,7 @@
                 {{$student->links("pagination::bootstrap-4")}}
         </div>
     </div>
+    <footer>
+            <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
+    </footer>
 @stop
-
-<footer>
-    <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
-</footer>
