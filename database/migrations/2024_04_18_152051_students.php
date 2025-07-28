@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("career_id")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
-            $table->unsignedInteger("dni");
+            $table->unsignedInteger("dni")->nullable();
             $table->string("name",length:64);
-            $table->date("birthDate");
-            $table->unsignedSmallInteger("current_year");
-            $table->string("division",length:1);
+            $table->date("birthDate")->nullable();
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name",length:64);
             $table->unsignedSmallInteger("total_years");
-            $table->json("career_divisions");
+            $table->enum("career_divisions",["A","B","C","D"]);
             $table->timestamps();
         });
     }
