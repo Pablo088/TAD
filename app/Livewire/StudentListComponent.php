@@ -22,7 +22,8 @@ class StudentListComponent extends Component
         $careers = Career::select("id","name")->get();
 
         $student = Student::select("students.id","dni","students.name AS student_name","birthDate","careers.name AS career_name","division","current_year")
-        ->join("careers","students.career_id","=","careers.id");
+        ->join("students_careers","students_careers.student_id","=","students.id")
+        ->join("careers","students_careers.career_id","=","careers.id");
         
         if($this->search){
             $student->where("students.name","LIKE","%$this->search%")->get();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\CareerController;
 use App\Http\Controllers\SettingController;
 use App\Models\Career;
 
@@ -52,6 +53,10 @@ Route::controller(StudentController::class)->group(function(){
     Route::post("student/nota/subir","subirNotas")->name("subirNotas");
 
     Route::get("student/info/{id}","info")->name("student.info");
+});
+
+Route::controller(CareerController::class)->group(function(){       
+    Route::put("create/career/add","add")->name("create.career.add");
 });
 
 Route::controller(SettingController::class)->group(function(){

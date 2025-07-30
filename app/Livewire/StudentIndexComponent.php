@@ -20,15 +20,24 @@ class StudentIndexComponent extends Component
         $careers = Career::select("id","name")->get();
 
         $student = Student::select("students.id AS student_id","students.name AS student_name","careers.name AS career_name","division","current_year")
-        ->join("careers","students.career_id","=","careers.id")
+        ->join("students_careers","students_careers.student_id","=","students.id")
+        ->join("careers","students_careers.career_id","=","careers.id")
         ->where("careers.id",$this->careerFilter??1);
         
         $filtersYear = Career::select("current_year")
-        ->join("students","careers.id","=","students.career_id")
+        ->join("students_careers","careers.id","=","students_careers.career_id")
         ->where("careers.id",$this->careerFilter??1)
         ->distinct()
+        ->orderBy("current_year","asc")
         ->get();
-        
+
+        $filtersDivision = Career::select("division")
+        ->join("students_careers","careers.id","=","students_careers.career_id")
+        ->where("careers.id",$this->careerFilter??1)
+        ->distinct()
+        ->orderBy("division","asc")
+        ->get();
+
         if($this->yearFilter){
             $student->where("current_year",$this->yearFilter);
         }
@@ -43,7 +52,7 @@ class StudentIndexComponent extends Component
        
         $student = $student->paginate(10);
 
-        return [$student,$careers,$filtersYear];
+        return [$student,$careers,$filtersYear,$filtersDivision];
     }
 
     public function render(){
@@ -51,10 +60,9 @@ class StudentIndexComponent extends Component
         $student = $filters[0];
         $careers = $filters[1];
         $filtersYear = $filters[2];
+        $filtersDivision = $filters[3];
 
-        //dd($student);
-
-        return view('livewire.student-index-component',compact("careers","student",'filtersYear'));
+        return view('livewire.student-index-component',compact("careers","student",'filtersYear','filtersDivision'));
     }
 
     public function selectAll(){

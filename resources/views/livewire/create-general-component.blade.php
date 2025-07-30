@@ -2,7 +2,10 @@
     <div id="carrera">
         <h3 class="text-center">Sección Carrera</h3>
 
-        <form action="" method="post" class="general-form">
+        <form action="{{route('create.career.add')}}" method="post" class="general-form">
+            @csrf
+            @method('put')
+
             <div class="campo-container">
                 <label for="inputCarrera">Nombre de la Carrera</label>
                 <input type="text" name="nombreCarrera" id="inputCarrera" class="form-control" maxlength="64">
@@ -38,7 +41,7 @@
             <div class="campo-container">
                 <label for="name">Nombre Completo</label>
                 <input type="text" name="name" id="name" class="form-control" placeholder="Ejemplo: Roberto Almada" value="{{old('name')}}" maxlength="64">
-                @if($errors->has("birthDate"))
+                @if($errors->has("name"))
                     @foreach($errors->get("name") as $message)    
                         <li class="text-danger">{{$message}}</li>
                     @endforeach

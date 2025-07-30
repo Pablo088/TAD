@@ -10,6 +10,6 @@ class Career extends Model
     use HasFactory;
 
     public function StudentCareer(){
-        return $this->hasMany(StudentCareer::class,"career_idc",'id');
+        return $this->hasMany(StudentCareer::class,"career_id","id");
     }
 }

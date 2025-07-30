@@ -13,8 +13,8 @@ return new class extends Migration
     {
           Schema::create('students_careers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("career_id")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
             $table->foreignId("student_id")->unique()->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");          
+            $table->foreignId("career_id")->references("id")->on("careers")->onDelete("cascade")->onUpdate("cascade");
             $table->unsignedSmallInteger("current_year");
             $table->string("division",length:1);
             $table->timestamps();

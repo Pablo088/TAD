@@ -25,8 +25,9 @@
         <div class="filter-field">
             <select name="division-filter" id="division-filter" wire:model.live="divisionFilter" class="form-control text-center">
                 <option value="">Filtro por Division</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
+                @foreach($filtersDivision as $filter)
+                    <option value="{{$filter->division}}">{{$filter->division}}</option>
+                @endforeach
             </select>
         </div>
     </div>
