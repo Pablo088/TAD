@@ -31,6 +31,5 @@
     
     @section("scripts")
         @livewireScripts
-        @vite("resources/js/student/studentList.js")
     @stop
 @stop

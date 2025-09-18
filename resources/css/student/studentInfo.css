@@ -1,10 +1,6 @@
-#the-form{
+.info{
     background-color: rgba(242, 190, 126, 1);
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 10px;
-}
-
-.input-container{
-    margin: 10px;
 }

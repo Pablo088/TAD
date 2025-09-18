@@ -16,20 +16,18 @@
         <div class="filter-field">
             <select name="year-filter" id="year-filter" wire:model.live="yearFilter" class="form-control text-center">
                 <option value="">Filtro por Año</option>
-                <option value="1">Primer Año</option>
-                <option value="2">Segundo Año</option>
-                <option value="3">Tercer Año</option>
-                <option value="4">Cuarto Año</option>
-                <option value="5">Quinto Año</option>
-                <option value="6">Sexto Año</option>
+                @foreach($filtersYear as $years)
+                    <option value="{{$years->current_year}}">{{$years->current_year}}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="filter-field">
             <select name="division-filter" id="division-filter" wire:model.live="divisionFilter" class="form-control text-center">
                 <option value="">Filtro por Division</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
+                @foreach($filtersDivision as $divisions)
+                    <option value="{{$divisions->division}}">{{$divisions->division}}</option>
+                @endforeach
             </select>
         </div>
     </div>
@@ -63,6 +61,7 @@
                             <form action="{{route('student.destroy',$students->id)}}" method="post">
                                 @csrf  
                                 @method("delete")
+
                                 <button type="submit" id="botonEliminar" onclick="return confirmar()" class="btn btn-danger th-btn" value="{{$students->id}}">Eliminar</button>
                             </form>
                         </td>
@@ -74,8 +73,20 @@
         <div>No hay resultados para mostrar</div>
     @endif
     
-    <footer style="display: flex;justify-content: space-between;">
+    <footer style="display: flex;justify-content: space-between;" class="table-footer">
         Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
         {{$student->links("pagination::bootstrap-4")}}
     </footer>
+
+    <script>
+        function confirmar(){
+            let respuesta = confirm("¿Estás seguro? Esta acción no se puede deshacer");
+    
+            if(respuesta == true){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
 </div>

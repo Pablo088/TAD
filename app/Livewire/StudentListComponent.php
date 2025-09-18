@@ -21,6 +21,20 @@ class StudentListComponent extends Component
     {   
         $careers = Career::select("id","name")->get();
 
+        $filtersYear = Career::select("current_year")
+        ->join("students_careers","careers.id","=","students_careers.career_id")
+        ->where("careers.id",$this->careerFilter??1)
+        ->distinct()
+        ->orderBy("current_year","asc")
+        ->get();
+
+        $filtersDivision = Career::select("division")
+        ->join("students_careers","careers.id","=","students_careers.career_id")
+        ->where("careers.id",$this->careerFilter??1)
+        ->distinct()
+        ->orderBy("division","asc")
+        ->get();
+
         $student = Student::select("students.id","dni","students.name AS student_name","birthDate","careers.name AS career_name","division","current_year")
         ->join("students_careers","students_careers.student_id","=","students.id")
         ->join("careers","students_careers.career_id","=","careers.id");
@@ -38,12 +52,12 @@ class StudentListComponent extends Component
             $student->where("division",$this->divisionFilter);
         }
 
-         if($this->careerFilter){
-            $student->where("careers.name",$this->careerFilter);
+        if($this->careerFilter){
+            $student->where("careers.id",$this->careerFilter);
         }
 
         $student = $student->paginate(10);
 
-        return view('livewire.student-list-component',compact("student","careers"));
+        return view('livewire.student-list-component',compact("student","careers","filtersYear","filtersDivision"));
     }
 }

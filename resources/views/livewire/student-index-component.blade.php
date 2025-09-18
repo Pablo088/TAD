@@ -71,7 +71,7 @@
             <button type="button" wire:click="sendAssist" class="btn btn-primary">Enviar</button>
         </div>
         
-        <footer style="display: flex;justify-content: space-between;">
+        <footer style="display: flex;justify-content: space-between;"class="table-footer">
             Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
             {{$student->links("pagination::bootstrap-4")}}
         </footer>

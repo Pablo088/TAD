@@ -64,7 +64,7 @@
                     @yield("content_messages")
                 </div>
                 <div id="content-main">
-                    @yield('content')
+                    @yield("content")
                 </div>
             </div>
         </div>

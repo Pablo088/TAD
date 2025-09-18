@@ -15,7 +15,8 @@ use App\Models\StudentAssist;
 use Carbon\Carbon;
 
 use App\Models\Setting;
-
+use App\Models\StudentCareer;
+use App\Models\StudentNote;
 use Exception;
 
 class StudentController extends Controller
@@ -31,8 +32,9 @@ class StudentController extends Controller
     }
 
     public function edit($student){
-        $students = Student::select("students.id AS student_id","career_id","students.id AS student_id","dni","birthDate","students.name AS student_name","division","current_year","careers.name AS career_name")
-        ->join("careers","careers.id","=","students.career_id")
+        $students = StudentCareer::select("students.id AS student_id","careers.id AS career_id","dni","birthDate","students.name AS student_name","division","current_year","careers.name AS career_name")
+        ->join("students","students.id","=","students_careers.student_id")
+        ->join("careers","careers.id","=","students_careers.career_id")
         ->where("students.id",$student)
         ->get()->toArray();
         
@@ -42,10 +44,12 @@ class StudentController extends Controller
     }
 
     public function info($id){
-        $studentAssist = StudentAssist::where("student_ida",$id)->count();
-
+        $studentNote = StudentNote::where("student_idn",$id)->paginate(10);
+        
         $diasClases = Setting::select("dias_clases")->first();
-
+        
+        $studentAssist = StudentAssist::where("student_ida",$id)->count();
+        
         $assistPercentage = round(($studentAssist * 100) / $diasClases->dias_clases);
 
         $student = StudentAssist::select("student_assists.created_at","name")
@@ -53,7 +57,7 @@ class StudentController extends Controller
         ->where("student_ida",$id)
         ->paginate(10);
        
-        return view("student.studentInfo",compact("assistPercentage","student"));
+        return view("student.studentInfo",compact("assistPercentage","student","studentNote"));
     }         
  
     public function filter(Request $request){
@@ -139,7 +143,7 @@ class StudentController extends Controller
             unset($student);
         } catch(Exception $e) {
             unset($student);
-            return redirect()->route("student.list")->with("error","Ocurrió un error al intentar eliminar al alumno. ".$e);
+            return redirect()->route("student.list")->with("error","Ocurrió un error al intentar eliminar al alumno.");
         }
         
         return redirect()->route("student.list");
@@ -172,25 +176,24 @@ class StudentController extends Controller
 
     public function subirNotas(Request $request){
         $request->validate([
-            "nota1" => ["required","int"],
-            "nota2" => ["required","int"],
-            "nota3" => ["required","int"]
+            "nombreUnidad" => ["required","string","between:7,30"],
+            "nombreParcial" => ["required","string","between:7,64"],
+            "nota" => ["required","int"]
         ]);
         
         try{
-            $notas = new Student();
+            $notas = new StudentNote();
             $notas->student_idn = $request->id;
-            $notas->nota1 = $request->nota1;
-            $notas->nota2 = $request->nota2;
-            $notas->nota3 = $request->nota3;
-            $notas->prom = ($request->nota1+$request->nota2+$request->nota3)/3;
+            $notas->unidad = $request->nombreUnidad;
+            $notas->nombre_parcial = $request->nombreParcial;
+            $notas->nota = $request->nota;
             $notas->save();
             unset($notas);
         } catch (Exception $e){
             unset($notas);
-            return redirect()->back()->with("error","Ocurrió un error al cargar las notas del alumno. ".$e);
+            return redirect()->back()->with("error","Ocurrió un error al cargar la nota del alumno.");
         } 
 
-        return redirect()->back()->with("success","¡Se cargaron las notas del alumno!");
+        return redirect()->back()->with("success","¡Se cargo la nota del alumno!");
     }           
 }

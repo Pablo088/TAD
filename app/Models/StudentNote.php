@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudentAssist extends Model
+class StudentNote extends Model
 {
     use HasFactory;
 
+    protected $table = "student_notes";
+
     public function student(){
-        return $this->belongsTo(Student::class,"student_ida","id");
+        return $this->belongsTo(Student::class,"student_idn","id");
     }
 }

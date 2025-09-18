@@ -82,7 +82,7 @@ class StudentIndexComponent extends Component
 
     public function giveAssist($value){
         if(count($this->studentAssisted) == 0){
-            $this->studentAssisted += ["student_id"=>$value,"checked" => true];
+            $this->studentAssisted += ["student_id" => $value,"checked" => true];
         }else{
             for($i = 0; $i < count($this->studentAssisted); $i++){
                 if($this->studentAssisted[$i]['student_id'] == $value && $this->studentAssisted[$i]['checked'] == false){
@@ -93,7 +93,6 @@ class StudentIndexComponent extends Component
                     break;
                 }
             }
-
         }
     }
 

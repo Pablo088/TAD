@@ -94,7 +94,7 @@
             </div>
 
             <div class="input-container">
-                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <button type="submit" class="btn btn-outline-primary">Actualizar</button>
             </div>
         </form>
     </div>
@@ -102,4 +102,4 @@
     <footer>
         <a href="{{route('student.list')}}"><button class="btn btn-secondary">Volver</button></a>
     </footer>
-@endsection    
+@stop    

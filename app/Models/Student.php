@@ -12,6 +12,10 @@ class Student extends Model
     public function StudentAssists(){
         return $this->hasMany(StudentAssist::class,"student_ida","id");
     }
+
+     public function StudentNote(){
+        return $this->hasMany(StudentAssist::class,"student_idn","id");
+    }
     
     public function StudentCareer(){
         return $this->hasOne(StudentCareer::class,"student_id","id");

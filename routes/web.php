@@ -17,6 +17,7 @@ use App\Models\Career;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+require __DIR__.'/../vendor/autoload.php';
 
 Route::controller(StudentController::class)->group(function(){
     Route::get("/",function(){

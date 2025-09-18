@@ -14,8 +14,9 @@ return new class extends Migration
        Schema::create('student_notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId("student_idn")->references("id")->on("students")->onDelete("cascade")->onUpdate("cascade");
-            $table->json("notes")->nullable();
-            $table->float("notes_avg",unsigned:true)->nullable();
+            $table->string("unidad",length:32);
+            $table->string("nombre_parcial",length:64);
+            $table->integer("nota");
             $table->timestamps();
         });
     }
