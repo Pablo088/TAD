@@ -29,7 +29,4 @@
 
     <livewire:student-list-component/>
     
-    @section("scripts")
-        @livewireScripts
-    @stop
 @stop

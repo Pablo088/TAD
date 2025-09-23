@@ -11,6 +11,7 @@ https://www.allphptricks.com/
 ## Installation 
 Make sure that you have setup the environment properly. You will need minimum PHP 8.1, MySQL/MariaDB, and composer.
 ///////////////////////
+
 ## Guia de instalación para este fork
 
 1. Podes descargar el proyecto tocando el boton "code" y luego presionando "download", o podes hacer un git clone (en la consola de comandos introducís: git clone https://github.com/Pablo088/laravel-10-crud.git)

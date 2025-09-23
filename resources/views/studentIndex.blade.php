@@ -20,8 +20,4 @@
     @stop
     
     <livewire:student-index-component/>
-
-    @section("scripts")
-        @livewireScripts
-    @stop
 @stop

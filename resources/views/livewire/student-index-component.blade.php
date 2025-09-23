@@ -73,7 +73,7 @@
         
         <footer style="display: flex;justify-content: space-between;"class="table-footer">
             Resultados: {{$student->firstItem()}} - {{$student->lastItem()}}. Total: {{$student->total()}}
-            {{$student->links("pagination::bootstrap-4")}}
+            {{$student->links("vendor.livewire.bootstrap")}}
         </footer>
     </div>
     <script>
