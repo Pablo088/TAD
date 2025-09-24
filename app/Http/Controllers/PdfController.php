@@ -3,23 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Barryvdh\DomPDF\Facade\Pdf;
-
 use App\Models\Student;
-
-use Illuminate\Support\Facades\Db;
+use \Illuminate\Support\Facades\DB;
 
 
 class PdfController extends Controller
 {
     public function reportFilter(){
-        $student = Student::select("dni","name","lastName","birthDate","division","prom",Db::raw("count(assists.created_at) as assist"))
+        $student = Student::select("dni","name","lastName","birthDate","division","prom",DB::raw("count(assists.created_at) as assist"))
                         ->groupBy("students.id","notas.student_idn","prom")                
                         ->join("notas","students.id","=","notas.student_idn")
                         ->join("assists","students.id","=","assists.student_ida")
                         ->where("prom",">=",6) 
-                        ->having(Db::raw("count(assists.created_at)"),">=",6)
+                        ->having(DB::raw("count(assists.created_at)"),">=",6)
                         ->get();
         dd($student);
         $pdf = Pdf::loadView('student.report', compact("student"));

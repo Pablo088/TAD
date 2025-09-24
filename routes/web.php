@@ -67,5 +67,8 @@ Route::controller(SettingController::class)->group(function(){
 });
 
 Route::controller(PdfController::class)->group(function(){
-    Route::get("pdf/report/filter","reportFilter")->name("report.pdf");
+    Route::get("generar-reporte",function(){
+        $careers = Career::all();
+        return view("generarReportes",compact("careers"));
+    })->name("generar.reporte");
 });

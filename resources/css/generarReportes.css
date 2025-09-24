@@ -1,0 +1,10 @@
+.campo-container{
+    margin: 10px;
+}
+
+.reporte{
+    background-color: rgba(242, 190, 126, 1);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}

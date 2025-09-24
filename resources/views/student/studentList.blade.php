@@ -7,7 +7,7 @@
 @section("content_header")
     <div id="general-actions">
         <div id="general-buttons">
-            <a class="mx-1" href="{{route('report.pdf')}}"><button class="btn btn-outline-primary">Reporte</button></a>
+            <a href="{{route('student.create.general')}}"><button class="btn btn-primary">Crear</button></a>
         </div>
     </div>
 @stop
@@ -28,5 +28,4 @@
     @endforeach
 
     <livewire:student-list-component/>
-    
 @stop
