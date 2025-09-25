@@ -2,9 +2,21 @@
     margin: 10px;
 }
 
-.reporte{
+#grupoAlumnos,#grupoFiltros{
     background-color: rgba(242, 190, 126, 1);
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 20px;
+}
+.filters-group{
+    display: flex;
+    justify-content: center;
+}
+
+.filter{
+    margin: 10px;
+}
+
+.btn{
+    width: 20%;
 }
