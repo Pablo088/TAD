@@ -4,22 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Student;
+use App\Models\StudentCareer;
 use \Illuminate\Support\Facades\DB;
 
 
 class PdfController extends Controller
 {
-    public function reportFilter(){
-        $student = Student::select("dni","name","lastName","birthDate","division","prom",DB::raw("count(assists.created_at) as assist"))
-                        ->groupBy("students.id","notas.student_idn","prom")                
-                        ->join("notas","students.id","=","notas.student_idn")
-                        ->join("assists","students.id","=","assists.student_ida")
-                        ->where("prom",">=",6) 
-                        ->having(DB::raw("count(assists.created_at)"),">=",6)
-                        ->get();
-        dd($student);
-        $pdf = Pdf::loadView('student.report', compact("student"));
+    public function report(Request $request){
+        $careerName = $request->career;
+        $divisionName = $request->division;
+        $current_year = $request->current_year;
+
+        $student = StudentCareer::select("dni","students.name AS student_name","current_year","division")
+        ->join("students","students_careers.student_id","=","students.id")
+        ->join("careers","students_careers.career_id","=","careers.id")
+        ->where("careers.name",$careerName)
+        ->where("students_careers.division",$divisionName) 
+        ->where("students_careers.current_year",$current_year)
+        ->get();
+
+        if(isset($request->porcAsistencia) && $request->porcAsistencia != null){
+            //dd("estamos pa");
+        }
+        dd($request->porcAsistencia);
+        $pdf = Pdf::loadView('student.report',compact("student","careerName","divisionName","current_year"));
         
         return $pdf->stream('report.pdf');
     }

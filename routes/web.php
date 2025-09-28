@@ -71,4 +71,6 @@ Route::controller(PdfController::class)->group(function(){
         $careers = Career::all();
         return view("generarReportes",compact("careers"));
     })->name("generar.reporte");
+
+    Route::post("generar-reporte/reporte","report")->name("generated.report");
 });
