@@ -9,7 +9,7 @@
 @stop
 
 @section("content")
-    <form action="{{route('generated.report')}}" method="post" id="add-form">
+    <form action="{{route('generated.report')}}" method="post" id="report_form">
         <div id="grupoFiltros">
             @csrf
             <h3 class="text-center">Filtros a aplicar</h3>
@@ -18,6 +18,7 @@
                 <div class="filter">
                     <label for="porcentajeAsistencia">Porcentaje de Asistencia</label>
                     <select name="porcAsistencia" id="porcentajeAsistencia" class="form-control form-filter">
+                        <option value="0">Ninguno</option>
                         <option value="1">Mayor igual al 80%</option>
                         <option value="2">Mayor igual al 60%</option>
                         <option value="3">Menor al 60%</option>
@@ -28,6 +29,7 @@
                 <div class="filter">
                     <label for="promedioNotas">Promedio de Notas</label>
                     <select name="promNotas" id="promedioNotas" class="form-control form-filter">
+                        <option value="0">Ninguno</option>
                         <option value="1">Mayor igual a 8</option>
                         <option value="2">Mayor igual a 6</option>
                         <option value="3">Menor a 6</option>
@@ -38,6 +40,7 @@
                 <div class="filter">
                     <label for="condicionGeneral">Condicion General (Asistencias + Notas)</label>
                     <select name="condGeneral" id="condicionGeneral" class="form-control form-filter">
+                        <option value="0">Ninguno</option>
                         <option value="1">Promocionados</option>
                         <option value="2">Regulares</option>
                         <option value="3">Libres</option>

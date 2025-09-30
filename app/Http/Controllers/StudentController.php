@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Career;
-
 use Illuminate\Http\Request;
-
 use App\Models\Student;
-
 use Illuminate\Support\Str;
-
 use App\Models\StudentAssist;
-
 use Carbon\Carbon;
-
 use App\Models\Setting;
 use App\Models\StudentCareer;
 use App\Models\StudentNote;
@@ -59,19 +53,9 @@ class StudentController extends Controller
        
         return view("student.studentInfo",compact("assistPercentage","student","studentNote"));
     }         
- 
-    public function filter(Request $request){
-
-        $student = Student::where("students.year",$request->filter)
-        ->join("divisions","students.id","=","divisions.student_idd")->get();
-
-        return view("student.studentFilter",compact("student"));
-    }
 
     public function add(Request $request){
-        $maxCareerYears = (Career::select("total_years")
-        ->where("id",$request->career)
-        ->get()->toArray())[0]["total_years"];
+       $maxCareerYears = Career::maxCareerYear($request->career);
 
         $request->validate([
             "dni" => ["required","numeric","digits:8"],
@@ -88,12 +72,16 @@ class StudentController extends Controller
             $student->dni = $request->dni;
             $student->name = $request->name;
             $student->birthDate = $request->birthDate;
-            $student->career_id = $request->career;
             $student->current_year = $request->current_year;
             $student->division = $request->division;
-
             $student->save();
+        
+            $student_career = new StudentCareer();
+            $student_career->student_id = $student->id;
+            $student_career->career_id = $request->career;
+
             unset($student);
+            unset($student_career);
         }catch(Exception $e){
             unset($student);
             return redirect()->back()->with("error","Ocurrió un error al actualizar los datos del alumno.");
@@ -103,9 +91,7 @@ class StudentController extends Controller
     }
     
     public function update(Request $request,$student){
-        $maxCareerYears = (Career::select("total_years")
-        ->where("id",$request->career)
-        ->get()->toArray())[0]["total_years"];
+        $maxCareerYears = Career::maxCareerYear($request->career);
 
         $request->validate([
             "dni" => ["required","numeric","digits:8"],
@@ -122,11 +108,16 @@ class StudentController extends Controller
             $student->dni = $request->dni;
             $student->name = $request->name;
             $student->birthDate = $request->birthDate;
-            $student->career_id = $request->career;
             $student->current_year = $request->current_year;
             $student->division = $request->division;
-
             $student->save();
+
+            $student_career = new StudentCareer();
+            $student_career->student_id = $student->id;
+            $student_career->career_id = $request->career;
+            $student_career->save();
+
+            unset($student_career);
             unset($student);
         }catch(Exception $e){
             unset($student);
@@ -163,15 +154,6 @@ class StudentController extends Controller
         } else{
             return redirect()->route("student.index")->with(["error2"=>"Ya se cargó anteriormente la asistencia al alumno"]);
         } 
-    }
-
-    public function findStudent(Request $request){
-        $student = Student::where("dni",$request->dni)->get();
-        if(count($student) !== 0){
-            return view("studentFind",compact("student"));
-        } else{
-            return redirect()->route("student.index")->with(["error"=>"El dni del alumno que ingresaste no existe"]);
-        }
     }
 
     public function subirNotas(Request $request){

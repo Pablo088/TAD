@@ -1,6 +1,6 @@
     <h1>
-        Reporte de Asistencias. 
-        <p>{{$careerName}} {{$current_year}} {{$divisionName}}</p>
+        {{$msjAsistencia}}. 
+        <p class="text-center">Carrera: {{$careerName}}. Año: {{$current_year}} año. Division: {{$divisionName}}.</p>
     </h1>
 
     <div>
@@ -9,13 +9,15 @@
                 <tr>
                     <th>DNI</th>
                     <th>Nombre</th>
+                    <th>Cantidad Asistencias</th>
                 </tr>
             </thead>
             <tbody>
             @foreach($student as $students)
                 <tr class="table-success">
-                    <th>{{$students->dni}}</th>
-                    <th>{{$students->student_name}}</th>
+                    <td>{{$students->dni}}</td>
+                    <td>{{$students->student_name}}</td>
+                    <td>{{$students->asistencias}}</td>
                 </tr>
             @endforeach
             </tbody>

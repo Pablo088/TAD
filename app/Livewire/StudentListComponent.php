@@ -23,6 +23,7 @@ class StudentListComponent extends Component
 
         $filtersYear = Career::select("current_year")
         ->join("students_careers","careers.id","=","students_careers.career_id")
+        ->join("students","students_careers.student_id","=","students.id")
         ->where("careers.id",$this->careerFilter??1)
         ->distinct()
         ->orderBy("current_year","asc")
@@ -30,6 +31,7 @@ class StudentListComponent extends Component
 
         $filtersDivision = Career::select("division")
         ->join("students_careers","careers.id","=","students_careers.career_id")
+        ->join("students","students_careers.student_id","=","students.id")
         ->where("careers.id",$this->careerFilter??1)
         ->distinct()
         ->orderBy("division","asc")

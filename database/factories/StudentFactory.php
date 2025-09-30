@@ -20,6 +20,8 @@ class StudentFactory extends Factory
             "dni"=>fake()->randomNumber($nbDigits=8,$strict=true),
             "name"=>fake()->firstName()." ".fake()->lastName(),
             "birthDate"=>fake()->date(),
+            "current_year"=>fake()->numberBetween($min=1,$max=3),
+            "division"=>fake()->randomElement(["A","B"])
         ];
     }
 }

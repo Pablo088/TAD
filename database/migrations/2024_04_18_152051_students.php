@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedInteger("dni")->nullable();
             $table->string("name",length:64);
             $table->date("birthDate")->nullable();
+            $table->unsignedSmallInteger("current_year");
+            $table->string("division",length:1);
             $table->timestamps();
         });
     }

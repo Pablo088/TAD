@@ -20,9 +20,7 @@ class StudentCareerFactory extends Factory
     {     
         return [
             "student_id" => fake()->unique()->numberBetween($min=1,$max=50),
-            "career_id" => fake()->numberBetween($min=1,$max=5),
-            "current_year"=>fake()->numberBetween($min=1,$max=3),
-            "division"=>fake()->randomElement(["A","B"])
+            "career_id" => fake()->numberBetween($min=1,$max=5)
         ];
     }
 }
