@@ -12,7 +12,7 @@ use App\Models\Career;
 class PdfController extends Controller
 {
     public function report(Request $request){
-        $dias_clases = (Setting::getSettings())["dias_clases"];
+        $dias_clases = Setting::getSetting("dias_clases");
         $maxCareerYears = Career::maxCareerYear($request->career);
         $careerName = $request->career;
         $divisionName = $request->division;
@@ -57,25 +57,25 @@ class PdfController extends Controller
 
         //Bloque donde se maneja el select del promedio de promocion
         if(isset($request->promNotas) && $request->promnNotas != 0){
-            $student = StudentCareer::select("dni","students.name AS student_name","careers.name", DB::raw("AVG('student_assists.student_id') AS asistencias"))
+            $student = StudentCareer::select("dni","students.name AS student_name","careers.name", DB::raw("AVG('student_notes.nota') AS prom_notas"))
             ->join("student_notes","students_careers.student_id","=","student_notes.student_idn");
             
             switch($request->promNotas){
                 case 1: 
-                    $mensaje = " alumnos con un porcentaje de asistencias mayor o igual al 80%";
+                    $mensaje = " alumnos con un promedio mayor o igual a 8";
                     $student = $student->having(DB::raw("(AVG('student_notes.nota')"),">=",8);
                 break;
                 case 2:
-                    $mensaje = " alumnos con un porcentaje de asistencias mayor o igual al 60%";
+                    $mensaje = " alumnos con un promedio mayor o igual a 6";
                     $student = $student->having(DB::raw("(AVG('student_notes.nota')"),">=",6)
                     ->having(DB::raw("(AVG('student_notes.nota')"),"<",8);
                 break;
                 case 3: 
-                    $mensaje = " alumnos con un porcentaje de asistencias menor al 60%";
+                    $mensaje = " alumnos con un promedio menor a 6";
                     $student = $student->having(DB::raw("(AVG('student_notes.nota')"),"<",6);
                 break;
                 case 4: 
-                    $mensaje = "Reporte total de asistencias de alumnos";
+                    $mensaje = "Reporte total de promedios de alumnos";
                     continue;
                 break;
             }

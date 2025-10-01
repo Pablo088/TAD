@@ -52,7 +52,7 @@ class StudentIndexComponent extends Component
             $student->orWhere("students.name","LIKE","%$this->search%"); 
         }
        
-        $student = $student->paginate(10);
+        $student = $student->get();
 
         return [$student,$careers,$filtersYear,$filtersDivision];
     }
