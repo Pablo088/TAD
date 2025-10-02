@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte</title>
-    @vite("resources/css/report.css")
-</head>
-<body>
     <h1>
         Reporte de {{$mensaje}}. 
         <p>Carrera: {{$careerName}}. Año: {{$current_year}} año. Division: {{$divisionName}}.</p>
@@ -45,5 +36,3 @@
             </tbody>
         </table>
     </div>
-</body>
-</html>

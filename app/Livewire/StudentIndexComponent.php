@@ -82,7 +82,12 @@ class StudentIndexComponent extends Component
 
     }
 
+    public function clearStudents(){
+        $this->studentAssisted = [];
+    }
+
     public function giveAssist($value){
+
         if(count($this->studentAssisted) == 0){
             $this->studentAssisted += ["student_id" => $value,"checked" => true];
         }else{

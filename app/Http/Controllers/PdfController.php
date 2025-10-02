@@ -18,6 +18,7 @@ class PdfController extends Controller
         $divisionName = $request->division;
         $current_year = $request->current_year;
         $mensaje = "";
+        $caracter = "";
 
         //Bloque para validar los inputs
         $request->validate([
@@ -31,25 +32,26 @@ class PdfController extends Controller
 
         //Bloque donde se maneja el select de porcentaje de asistencia
         if(isset($request->porcAsistencia) && $request->porcAsistencia != 0){
+            $caracter = "y";
             $student = StudentCareer::select("dni","students.name AS student_name","careers.name", DB::raw("count('student_assists.student_id') AS asistencias"))
             ->join("student_assists","students_careers.student_id","=","student_assists.student_ida");
          
             switch($request->porcAsistencia){
                 case 1: 
-                    $mensaje = " alumnos con un porcentaje de asistencias mayor o igual al 80%";
+                    $mensaje .= " alumnos con un porcentaje de asistencias mayor o igual al 80%";
                     $student = $student->having((DB::raw("(count('student_assists.student_id') * 100) / $dias_clases")),">=",80);
                 break;
                 case 2:
-                    $mensaje = " alumnos con un porcentaje de asistencias mayor o igual al 60%";
+                    $mensaje .= " alumnos con un porcentaje de asistencias mayor o igual al 60%";
                     $student = $student->having((DB::raw("(count('student_assists.student_id') * 100) / $dias_clases")),">=",60)
                     ->having((DB::raw("(count('student_assists.student_id') * 100) / $dias_clases")),"<",80);
                 break;
                 case 3: 
-                    $mensaje = " alumnos con un porcentaje de asistencias menor al 60%";
+                    $mensaje .= " alumnos con un porcentaje de asistencias menor al 60%";
                     $student = $student->having((DB::raw("(count('student_assists.student_id') * 100) / $dias_clases")),"<",60);
                 break;
                 case 4: 
-                    $mensaje = "Reporte total de asistencias de alumnos";
+                    $mensaje .= " asistencias de la totalidad de los alumnos";
                     continue;
                 break;
             }
@@ -62,20 +64,20 @@ class PdfController extends Controller
             
             switch($request->promNotas){
                 case 1: 
-                    $mensaje = " alumnos con un promedio mayor o igual a 8";
+                    $mensaje .= $caracter??''." alumnos con un promedio mayor o igual a 8";
                     $student = $student->having(DB::raw("(AVG('student_notes.nota')"),">=",8);
                 break;
                 case 2:
-                    $mensaje = " alumnos con un promedio mayor o igual a 6";
+                    $mensaje .= $caracter??''." alumnos con un promedio mayor o igual a 6";
                     $student = $student->having(DB::raw("(AVG('student_notes.nota')"),">=",6)
                     ->having(DB::raw("(AVG('student_notes.nota')"),"<",8);
                 break;
                 case 3: 
-                    $mensaje = " alumnos con un promedio menor a 6";
+                    $mensaje .= $caracter??''." alumnos con un promedio menor a 6";
                     $student = $student->having(DB::raw("(AVG('student_notes.nota')"),"<",6);
                 break;
                 case 4: 
-                    $mensaje = "Reporte total de promedios de alumnos";
+                    $mensaje .= $caracter??''." promedios de la totalidad de los alumnos";
                     continue;
                 break;
             }

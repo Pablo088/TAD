@@ -1,11 +1,12 @@
 <div>
+    <!--{{var_dump($this->studentAssisted)}}-->
      <div id="filters-container">
         <div class="filter-field">
             <input type="search" name="input-filter" id="input-filter" wire:model.live="search" class="form-control" placeholder="Buscar por nombre">
         </div>        
         
         <div class="filter-field">
-            <select name="career-filter" id="career-filter" wire:model.live="careerFilter" class="form-control text-center">
+            <select name="career-filter" id="career-filter" wire:model.live="careerFilter" wire:change="clearStudents" class="form-control text-center">
                 <option value="">Filtro por Carrera</option>
                 @foreach($careers as $career)
                     <option value="{{$career->id}}">{{$career->name}}</option>
@@ -14,7 +15,7 @@
         </div>    
 
         <div class="filter-field">
-            <select name="year-filter" id="year-filter" wire:model.live="yearFilter"  class="form-control text-center">
+            <select name="year-filter" id="year-filter" wire:model.live="yearFilter" wire:change="clearStudents" class="form-control text-center">
                 <option value="">Filtro por Año</option>
                 @foreach($filtersYear as $filter)
                     <option value="{{$filter->current_year}}">{{$filter->current_year}}</option>
@@ -23,7 +24,7 @@
         </div>
 
         <div class="filter-field">
-            <select name="division-filter" id="division-filter" wire:model.live="divisionFilter" class="form-control text-center">
+            <select name="division-filter" id="division-filter" wire:model.live="divisionFilter" wire:change="clearStudents" class="form-control text-center">
                 <option value="">Filtro por Division</option>
                 @foreach($filtersDivision as $filter)
                     <option value="{{$filter->division}}">{{$filter->division}}</option>
